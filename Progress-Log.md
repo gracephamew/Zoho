@@ -9,7 +9,7 @@
 
 1. Quotes: Grace to install `quote_account_crn_from_deal` and its workflow rule (steps in the Quotes README), then test. Not compiled or run yet.
 2. Quotes: place Account CRN and Bpay Biller Code on the Quote layout (Grace, in Setup).
-3. Quotes: decide whether Bpay Biller Code stays a fixed 508572 on UK Quotes, where the Deal's Biller Code is empty.
+3. Quotes: Grace to change the Bpay Biller Code formula on Quotes to `If(${Quotes.Country (EW)}=='AU','508572','')` in Setup, then confirm. New UK Quotes show 508572 until this is done.
 4. Quotes: confirm whether the Books sync needs the CRN, which affects workflow order.
 5. Zoho CRM licence shows a paid expiry of 24 Nov 2026. Check renewal.
 6. Quotes: decide on a one-off backfill of Account CRN on existing Quotes.
@@ -25,6 +25,7 @@
 - 10:36, Grace, create the two fields on Quotes.
 - 10:48, Grace, move Zoho work into `gracephamew/zoho`.
 - 11:10, Grace, build the automation: on create or edit, if Account CRN is empty, map it from the Deal.
+- 11:25, Grace, make the Quote Biller Code formula match the Deal's.
 
 **Done**
 - Confirmed the Zoho CRM connector reaches org `7005318614` (production).
@@ -34,18 +35,22 @@
 
 - Wrote `quotes/biller-code-account-crn/quote_account_crn_from_deal.dg` and the setup steps for a new Quotes workflow rule. Not installed or tested in Zoho.
 
+- Checked Country (EW) on Quotes (`Country_EW`) against the Deal: equal on the 200 newest Quotes with a Deal. Wrote the matching Quote formula for Grace to paste.
+
 **Changed**
 - The Quotes work was first logged in `gracephamew/crew`. It now lives here, and the crew log points to this repo.
 
 **Decisions**
 - Zoho CRM development work lives in `gracephamew/zoho`, separate from the Zoho to Asana automations in `gracephamew/crew`.
 - The Account CRN copy is a new, separate workflow rule and function, so no existing rule is changed. Its update suppresses triggers, so other Quotes workflows do not fire from it.
-- Bpay Biller Code on Quotes is a calculated field with a fixed value of 508572 (Grace, 18 Nov 2026).
+- Bpay Biller Code on Quotes was first a fixed 508572; changed the same day to match the Deal formula, 508572 only when Country (EW) is AU (Grace, 18 Nov 2026).
 
 **Learned**
 - The Zoho CRM connector can read and write records, create fields and update CRM variables. It has no tools for Deluge functions, workflow rules, schedules, custom buttons or layout edits.
 - Deals hold `Account_CRN` (text, 10) and `Bpay_Biller_Code` (formula). The Deal's Biller Code was 508572 on the DW deal and empty on the UK deals checked.
 - Existing Quotes show the new formula field as empty straight after creation.
+
+- The Deal formula is `If(${Deals.Country (EW)}=='AU','508572','')`. The connector cannot edit an existing field, so formula changes are made in Setup.
 
 **Next**
 - Grace installs the function and rule; Claude reads a test Quote back through the connector.

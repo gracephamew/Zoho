@@ -39,9 +39,23 @@ Created on Quotes through the connector, 18 Nov 2026, at Grace's request:
 - Fact: straight after creation, both read empty on the three newest existing Quotes.
 - Unverified: the formula is expected to show `508572` on new Quotes and on existing Quotes once next saved. Not yet seen.
 
+## Bpay Biller Code formula, to match the Deal (18 Nov 2026)
+
+- Fact: the Deal formula is `If(${Deals.Country (EW)}=='AU','508572','')` (Grace's screenshot of the Deals field).
+- Fact: Quotes has its own Country (EW) field, `Country_EW`, text, id `93610000014630058`. On the 200 newest Quotes with a Deal it equalled the Deal's Country (EW) on every row (values AU and UK only).
+- Fact: the two Quotes created after the field was added show `508572`, so the fixed formula is live. Older Quotes stay empty until next saved.
+- The connector cannot edit an existing field, so Grace changes the Quote formula in Setup to:
+
+```
+If(${Quotes.Country (EW)}=='AU','508572','')
+```
+
+- Unverified: whether Country (EW) is already filled at the moment a Quote is first saved. If a workflow fills it afterwards, the Biller Code may show empty until the next save.
+- Status: sent to Grace 18 Nov 2026. Not yet confirmed as applied.
+
 ## Open choices
 
-1. Biller Code on UK Quotes: the Quote field is a fixed `508572` for every Quote. The Deal's field is empty for UK deals. Keep it fixed, or make the Quote formula conditional.
+1. Biller Code on UK Quotes: decided 18 Nov 2026. The Quote formula is to match the Deal (508572 only when Country (EW) is AU).
 2. Which workflow carries the Account CRN copy (see below).
 3. Whether the Books sync needs the CRN. If it does, the copy must run before the sync rules, or the sync functions should read the CRN from the Deal.
 
