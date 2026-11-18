@@ -1,0 +1,56 @@
+void automation.quote_account_crn_from_deal(string quoteId)
+{
+	// PURPOSE
+	//   When a Quote is created or edited and its Account CRN is empty,
+	//   copy Account CRN from the Quote's Deal.
+	// VERSION
+	//   v1, 18/11/2026. New function, no earlier version.
+	// CATEGORY
+	//   automation (workflow custom function), returns void.
+	// ARGUMENT
+	//   quoteId = Quotes record id (Quote Id merge field).
+	// WRITE-SET DIFF
+	//   Added:     Quotes.Account_CRN
+	//   Removed:   none
+	//   Unchanged: none
+	// DOES NOT
+	//   Overwrite an Account CRN that is already filled.
+	//   Touch the Deal, Bpay Biller Code (a formula field) or any other field.
+	// TRIGGERS
+	//   The update is sent with an empty trigger list, so it does NOT fire
+	//   other Quotes workflows (Books sync, Service Booked and so on).
+	// API CALLS
+	//   At most 3 per run: read Quote, read Deal, update Quote.
+	qid = quoteId.toString().replaceAll("[^0-9]","");
+	quote = zoho.crm.getRecordById("Quotes",qid.toLong());
+	currentCrn = ifnull(quote.get("Account_CRN"),"").toString().trim();
+	deal = quote.get("Deal_Name");
+	if(currentCrn != "")
+	{
+		info "Quote " + qid + ": Account CRN already filled (" + currentCrn + "). Nothing to do.";
+	}
+	else if(deal == null)
+	{
+		info "Quote " + qid + ": no Deal linked. Nothing to copy.";
+	}
+	else
+	{
+		dealId = deal.get("id").toString();
+		dealRec = zoho.crm.getRecordById("Deals",dealId.toLong());
+		dealCrn = ifnull(dealRec.get("Account_CRN"),"").toString().trim();
+		if(dealCrn == "")
+		{
+			info "Quote " + qid + ": Deal " + dealId + " has no Account CRN. Nothing to copy.";
+		}
+		else
+		{
+			upd = Map();
+			upd.put("Account_CRN",dealCrn);
+			noTrigger = List();
+			opt = Map();
+			opt.put("trigger",noTrigger);
+			resp = zoho.crm.updateRecord("Quotes",qid.toLong(),upd,opt);
+			info "Quote " + qid + ": Account CRN set to " + dealCrn + " from Deal " + dealId + ". Response: " + resp;
+		}
+	}
+}

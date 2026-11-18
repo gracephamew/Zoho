@@ -10,7 +10,7 @@ When a Quote is created, it should carry the Biller Code and the Account CRN fro
 
 - Fields created on Quotes (18 Nov 2026). Done.
 - Fields placed on the Quote layout. Not done (Grace, in Setup).
-- Account CRN copied from the Deal on create. Not built.
+- Account CRN copied from the Deal on create or edit when empty. Function written 18 Nov 2026 (`quote_account_crn_from_deal.dg`). Not yet installed in Zoho.
 
 ## What was found (read-only checks, 18 Nov 2026)
 
@@ -56,9 +56,37 @@ From Grace's screenshots of Setup, Workflow Rules, 18 Nov 2026. Criteria and fun
 | Sync Quote 1 to Books - On Create | Create | On | Order matters if Books needs the CRN. |
 | Sync Quote2 to Books | Create | On | Order matters if Books needs the CRN. |
 
+## The automation (written 18 Nov 2026, not yet installed)
+
+Grace's instruction: on create or edit, if Account CRN is empty, map it from the Deal.
+
+Design: a new, separate workflow rule with its own function, so no existing rule or function is changed.
+
+- Function: `quote_account_crn_from_deal.dg` in this folder. Category automation, returns void, one argument `quoteId`.
+- It writes only `Quotes.Account_CRN`, and only when that field is empty and the Deal has a value.
+- The update is sent with an empty trigger list, so it does not fire the other Quotes workflows (Books sync and so on).
+- Not tested: the code has not been compiled or run in Zoho.
+
+Setup steps in Zoho CRM:
+
+1. Setup, Automation, Actions, Functions, New Function. Category: Automation. Display name: Quote Account CRN From Deal. API name: `quote_account_crn_from_deal`. Module: Quotes.
+2. Edit Arguments: add `quoteId`, type string.
+3. Paste the whole file so the signature is line 1. If Zoho shows a different API name in the right-hand panel, change the name in line 1 to match it exactly. Save.
+4. Setup, Automation, Workflow Rules, Create Rule. Module: Quotes. Name: Quote Account CRN From Deal.
+5. When: Record action, Create or Edit. Leave "Repeat this workflow whenever a quote is edited" ticked.
+6. Condition: Account CRN is empty.
+7. Instant action: Function, choose the function above, map `quoteId` to Quotes, Quote Id. Save and switch on.
+8. Test: create a Quote on a Deal that has an Account CRN, then tell Claude the Quote, so it can be read back through the connector.
+
+Limits to know:
+
+- If the CRN is added to the Deal later, the Quote picks it up only the next time that Quote is edited.
+- Existing Quotes are not filled until they are next edited. A one-off backfill through the connector is possible if wanted.
+- Because triggers are suppressed, a rule that needs to react to Account CRN being filled will not fire from this update.
+
 ## Next
 
-1. Grace to send the criteria and function code of "Quote Currency Follows Deal".
-2. Claude to add the Account CRN copy (Deal `Account_CRN` to Quote `Account_CRN`) and return the full updated function plus setup steps.
-3. Grace to place both fields on the Quote layout.
-4. Test on a new Quote and read it back through the connector.
+1. Grace to install the function and the workflow rule (steps above) and report any compile error.
+2. Grace to place both fields on the Quote layout.
+3. Test on a new Quote and read it back through the connector.
+4. Decide on a one-off backfill of existing Quotes.
