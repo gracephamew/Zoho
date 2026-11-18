@@ -46,7 +46,7 @@
 
 - Read-only profile of 542 Vendors and 7,349 Products for image naming. Wrote `images/naming-structure/README.md` with four naming options and a recommendation. Nothing changed in Zoho or S3.
 
-- Built `images/naming-structure/sample-option-2.csv` from live Zoho data: 10 Venues, 20 Suppliers and 183 of their active Products (70 rooms), each with its S3 folder and example file names in the option 2 structure.
+- Built `images/naming-structure/sample-option-2.csv` from live Zoho data: 10 Venues, 20 Suppliers and 185 of their active Products (70 rooms), each with its S3 folder and example file names in the option 2 structure.
 
 **Changed**
 - The Quotes work was first logged in `gracephamew/crew`. It now lives here, and the crew log points to this repo.

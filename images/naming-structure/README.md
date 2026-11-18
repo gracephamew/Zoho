@@ -143,7 +143,7 @@ The vendor folder under `products/` is taken from the front of the SKU, not from
 
 ## Sample
 
-`sample-option-2.csv` shows option 2 on real records: 10 Venues, 20 Suppliers and 183 of their active Products (70 rooms), with the S3 folder and example file names for each. The file names are examples only; no such files exist yet.
+`sample-option-2.csv` shows option 2 on real records: 10 Venues, 20 Suppliers and 185 of their active Products (70 rooms), with the S3 folder and example file names for each. The file names are examples only; no such files exist yet.
 
 ## Not done
 
