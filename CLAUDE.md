@@ -15,6 +15,7 @@ The Zoho to Asana automations (Crew Package to Asana, Alec's Social Content) are
 | Piece of work | Folder | Status |
 |---|---|---|
 | Quotes: Bpay Biller Code and Account CRN from the Deal | `quotes/biller-code-account-crn/` | Fields created 18 Nov 2026. Copy function written, not yet installed in Zoho. |
+| Images: S3 file naming for Vendor and Product pictures | `images/naming-structure/` | Options written 18 Nov 2026. Awaiting Grace's choice. |
 
 ## 2. Where things are
 

@@ -14,6 +14,8 @@
 5. Zoho CRM licence shows a paid expiry of 24 Nov 2026. Check renewal.
 6. Quotes: 27 Deals have no Account CRN (49 Quotes from 1 Sept stay empty) and 8 Quotes have no Deal. Decide whether those Deals should get a CRN. List in `quotes/biller-code-account-crn/backfill-2026-11-18/not_filled.json`.
 7. Decide whether the Crew Package to Asana automation stays in `gracephamew/crew` or moves here.
+8. Images: Grace to choose a file naming option (`images/naming-structure/README.md`) and answer its seven questions, including whether S3 files are public and how re-issued products keep their pictures.
+9. Images: 10 Venues and 7 Suppliers have no Vendor Code; 10 Products have a SKU with no vendor part.
 
 ---
 
@@ -27,6 +29,7 @@
 - 11:10, Grace, build the automation: on create or edit, if Account CRN is empty, map it from the Deal.
 - 11:25, Grace, make the Quote Biller Code formula match the Deal's.
 - 11:38, Grace, populate Account CRN on all Quotes created from 1 Sept 2026.
+- 12:02, Grace, show S3-hosted product images in CRM and Canvas; analyse Vendors and Products and propose image file naming options.
 
 **Done**
 - Confirmed the Zoho CRM connector reaches org `7005318614` (production).
@@ -39,6 +42,8 @@
 - Checked Country (EW) on Quotes (`Country_EW`) against the Deal: equal on the 200 newest Quotes with a Deal. Wrote the matching Quote formula for Grace to paste.
 
 - Backfilled Account CRN from the Deal on 422 of the 480 Quotes created from 1 Sept 2026 (triggers off). Verified afterwards: all 422 equal the Deal's CRN, none differ. Not filled: 8 with no Deal, 49 on 27 Deals with no CRN; 1 was already filled.
+
+- Read-only profile of 542 Vendors and 7,349 Products for image naming. Wrote `images/naming-structure/README.md` with four naming options and a recommendation. Nothing changed in Zoho or S3.
 
 **Changed**
 - The Quotes work was first logged in `gracephamew/crew`. It now lives here, and the crew log points to this repo.
@@ -56,6 +61,9 @@
 - The Deal formula is `If(${Deals.Country (EW)}=='AU','508572','')`. The connector cannot edit an existing field, so formula changes are made in Setup.
 
 - COQL with `limit 2000` returned all 480 Quotes in one call. `updateRecords` with `"trigger": []` takes 100 records per call and reports Modified By as Admin EW Zoho.
+
+- `Vendor_Code` (445 of 542, unique) and `Product_Code` (all 7,349, unique, shape vendor code, hyphen, global counter) are clean and safe for file names. Names are not. There is no field linking re-issued products; the SKU counter is not a per-vendor series.
+- Products already has image fields: `Record_Image`, `Room_Hero_Image`, `Room_Images` (up to 10 each), `Room_Floor_Plan`. Vendors has `Record_Image`, `Venue_Hero_Images`, `Vendor_Images`.
 
 **Next**
 - Grace installs the function and rule; Claude reads a test Quote back through the connector.
