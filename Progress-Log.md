@@ -32,7 +32,7 @@
 - 11:38, Grace, populate Account CRN on all Quotes created from 1 Sept 2026.
 - 12:02, Grace, show S3-hosted product images in CRM and Canvas; analyse Vendors and Products and propose image file naming options.
 - 12:25, Grace, sample file of 30 Vendors and up to 200 Products with option 2 file names.
-- 12:40, Grace, outline of the work to build a widget that shows S3 images in Zoho.
+- 13:44, Grace, outline of the work to build a widget that shows S3 images in Zoho.
 
 **Done**
 - Confirmed the Zoho CRM connector reaches org `7005318614` (production).
