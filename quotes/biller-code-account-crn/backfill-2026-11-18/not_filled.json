@@ -1,0 +1,402 @@
+{
+  "generated": "18/11/2026 11:43 Melbourne",
+  "quotes_no_deal": [
+    {
+      "id": "93610000022789193",
+      "Subject": "Extra Guest HMU | Khalid + Yasmin | Le Meridien Jimbaran",
+      "Created_Time": "2026-09-18T17:43:40+10:00"
+    },
+    {
+      "id": "93610000025594342",
+      "Subject": "Sabina + Alex | W Bali | 29.07.27 DW491 VOID Quote 1",
+      "Created_Time": "2026-10-06T16:35:09+11:00"
+    },
+    {
+      "id": "93610000026213102",
+      "Subject": "Dana + Eddie | BBG | 03.05.27 DW489 Quote 2 - Accommodation",
+      "Created_Time": "2026-10-06T12:21:55+11:00"
+    },
+    {
+      "id": "93610000026213121",
+      "Subject": "Dana + Eddie | BBG | 03.05.27 DW489 Quote 2 - Catering",
+      "Created_Time": "2026-10-06T12:25:41+11:00"
+    },
+    {
+      "id": "93610000027434603",
+      "Subject": "Sabina + Alex | W Bali | 29.07.27 DW491 VOID Quote 2",
+      "Created_Time": "2026-10-12T15:47:20+11:00"
+    },
+    {
+      "id": "93610000027434615",
+      "Subject": "Sabina + Alex | W Bali | 29.07.27 DW491 VOID Quote 3",
+      "Created_Time": "2026-10-12T15:49:23+11:00"
+    },
+    {
+      "id": "93610000030899726",
+      "Subject": "Ebboni | Hilton Fiji Beach Resort and Spa Denarau | 30.06.28 DWAU500 Quote 3",
+      "Created_Time": "2026-10-29T11:28:27+11:00"
+    },
+    {
+      "id": "93610000033329071",
+      "Subject": "Maisie + Jamie | Garrya Tongsai | | 27.02.27 DW091 - HMU",
+      "Created_Time": "2026-11-09T16:25:14+11:00"
+    }
+  ],
+  "deals_no_crn": [
+    {
+      "deal_id": "93610000002994004",
+      "deal_name": "Laura + Jerome | The Uluwatu | 05.09.26 DW251"
+    },
+    {
+      "deal_id": "93610000003402002",
+      "deal_name": "Brett + Stephanie | Shangri-la Yanuca Island Resort | 22.10.26 DW263"
+    },
+    {
+      "deal_id": "93610000003418012",
+      "deal_name": "Kreshya + Nicholas | Arnalaya Beach House | 16.09.26 DW264"
+    },
+    {
+      "deal_id": "93610000003690038",
+      "deal_name": "Taylah + Cameron | Pullman Bunker Bay | 07.11.26 DW273"
+    },
+    {
+      "deal_id": "93610000004085005",
+      "deal_name": "Christopher + Vittoria | Intercontinental Fiji | 12.10.26 DW279"
+    },
+    {
+      "deal_id": "93610000004230008",
+      "deal_name": "Jessica + Casey Bewley | Hilton Fiji Beach Resort and Spa Denarau | 25.09.26 DW282"
+    },
+    {
+      "deal_id": "93610000004361007",
+      "deal_name": "Stacey + Russell | Thavorn Beach Village, Phuket | 31.10.26 DW284"
+    },
+    {
+      "deal_id": "93610000004543003",
+      "deal_name": "Sophie + Zack | Sofitel Fiji Resort & Spa | 16.09.26 DW287"
+    },
+    {
+      "deal_id": "93610000004959021",
+      "deal_name": "Hannah + Brian | The Uluwatu | 09.10.26 DW296"
+    },
+    {
+      "deal_id": "93610000005042037",
+      "deal_name": "Brady + Shantele | Aksari Luxury Resort & Spa | 10.10.26 DW298"
+    },
+    {
+      "deal_id": "93610000006154098",
+      "deal_name": "Cassia + Scott | Intercontinental Fiji | 18.09.26 DW323"
+    },
+    {
+      "deal_id": "93610000006655125",
+      "deal_name": "Joanne + Ashton | Sofitel Fiji Resort & Spa | 22.10.26 DW167"
+    },
+    {
+      "deal_id": "93610000006766075",
+      "deal_name": "Jess + Chris | Outrigger Fiji | 09.10.26 DW132"
+    },
+    {
+      "deal_id": "93610000007532590",
+      "deal_name": "Stevie | Sofitel Fiji Resort & Spa | 22.10.26 DW220"
+    },
+    {
+      "deal_id": "93610000007532658",
+      "deal_name": "Boyd + Rebecca | Arinara Beach Resort Phuket | 26.09.26 DW212"
+    },
+    {
+      "deal_id": "93610000007538755",
+      "deal_name": "Toni-elly | Shangri-la Yanuca Island Fiji | 19.10.26 DW156"
+    },
+    {
+      "deal_id": "93610000007539704",
+      "deal_name": "Sheridan | Courtyard By Marriott Bali Nusa Dua | 17.10.26 DW168"
+    },
+    {
+      "deal_id": "93610000007545503",
+      "deal_name": "Sarah | The Edge Bali | 01.10.26 DW129"
+    },
+    {
+      "deal_id": "93610000007552438",
+      "deal_name": "Mishayla + James | Cape Fahn Hotel | 24.10.26 DW119"
+    },
+    {
+      "deal_id": "93610000007552537",
+      "deal_name": "Tracey | Outrigger Fiji | 31.10.26 DW144"
+    },
+    {
+      "deal_id": "93610000007556614",
+      "deal_name": "Adam & Stacey | Sofitel Fiji Resort & Spa | 26.09.26 DW147"
+    },
+    {
+      "deal_id": "93610000007556636",
+      "deal_name": "Claire | Hilton Fiji Beach Resort and Spa Denarau | 07.10.26 DW194"
+    },
+    {
+      "deal_id": "93610000007855079",
+      "deal_name": "Dima + Hossam | Maya Ubud | 19.09.26 DW343"
+    },
+    {
+      "deal_id": "93610000010349182",
+      "deal_name": "Jacqueline + Walisha | Le Meridien Jimbaran | 10.10.26 DW375"
+    },
+    {
+      "deal_id": "93610000010661317",
+      "deal_name": "Emily + Anrich | Peppers Seminyak | 30.10.26 DW380"
+    },
+    {
+      "deal_id": "93610000012834017",
+      "deal_name": "Kimberley + Daniel | Le Meridien Jimbaran | 16.10.26 DW409"
+    },
+    {
+      "deal_id": "93610000012897019",
+      "deal_name": "Nyasha + Sandhya | Le Meridien Jimbaran | 13.09.26 DW410"
+    }
+  ],
+  "quotes_on_deals_no_crn": [
+    {
+      "id": "93610000020384297",
+      "Subject": "Sofitel Sound System - Sophie + Zack | Sofitel Fiji Resort & Spa | 16.09.26",
+      "deal_id": "93610000004543003"
+    },
+    {
+      "id": "93610000020388530",
+      "Subject": "Joanne + Ashton | Sofitel Fiji Resort & Spa | Adjusted Venue Invoice",
+      "deal_id": "93610000006655125"
+    },
+    {
+      "id": "93610000020392609",
+      "Subject": "Cassia + Scott | Intercontinental Fiji | 18.09.26 DW323 Totoka Adjustment",
+      "deal_id": "93610000006154098"
+    },
+    {
+      "id": "93610000020401397",
+      "Subject": "Laura + Jerome | The Uluwatu | 05.09.26 DW251 | Canny Weddings",
+      "deal_id": "93610000002994004"
+    },
+    {
+      "id": "93610000020505110",
+      "Subject": "Kreshya + Nicholas | Arnalaya Beach House | 16.09.26 DW264 | Mimpi Upgrade",
+      "deal_id": "93610000003418012"
+    },
+    {
+      "id": "93610000020505152",
+      "Subject": "Stevie | Sofitel Fiji Resort & Spa | 22.10.26 DW220 | Venue Adjustment",
+      "deal_id": "93610000007532590"
+    },
+    {
+      "id": "93610000020505228",
+      "Subject": "Kreshya + Nicholas | Arnalaya Beach House | 16.09.26 DW264 | Wedding Catering Upgrade",
+      "deal_id": "93610000003418012"
+    },
+    {
+      "id": "93610000020505239",
+      "Subject": "Kreshya + Nicholas | Arnalaya Beach House | 16.09.26 DW264 | OTDP Upgrade",
+      "deal_id": "93610000003418012"
+    },
+    {
+      "id": "93610000020505702",
+      "Subject": "Brett + Stephanie | Shangri-la Yanuca Island Resort | 22.10.26 DW263 | Venue Adjustments",
+      "deal_id": "93610000003402002"
+    },
+    {
+      "id": "93610000020505851",
+      "Subject": "Laura + Jerome | The Uluwatu | 05.09.26 DW251 | Generator",
+      "deal_id": "93610000002994004"
+    },
+    {
+      "id": "93610000020513053",
+      "Subject": "DJ Works - Christopher + Vittoria | Intercontinental Fiji | 12.10.26",
+      "deal_id": "93610000004085005"
+    },
+    {
+      "id": "93610000020985062",
+      "Subject": "Kreshya + Nicholas | Arnalaya Beach House | 16.09.26 DW264 | BEH UPGRADE",
+      "deal_id": "93610000003418012"
+    },
+    {
+      "id": "93610000020985141",
+      "Subject": "Kreshya + Nicholas | Arnalaya Beach House | 16.09.26 DW264 | Final Styling Invoice",
+      "deal_id": "93610000003418012"
+    },
+    {
+      "id": "93610000020989009",
+      "Subject": "Final venue extras | Nyasha + Sandhya | Le Meridien Jimbaran",
+      "deal_id": "93610000012897019"
+    },
+    {
+      "id": "93610000021016526",
+      "Subject": "Final Venue Invoice | Jessica + Casey Bewley | Hilton Fiji Beach Resort and Spa Denarau",
+      "deal_id": "93610000004230008"
+    },
+    {
+      "id": "93610000021586905",
+      "Subject": "Tewaka - Adam & Stacey | Sofitel Fiji Resort & Spa | 26.09.26",
+      "deal_id": "93610000007556614"
+    },
+    {
+      "id": "93610000021609056",
+      "Subject": "Transfers | Boyd + Rebecca | Arinara Beach Resort Phuket",
+      "deal_id": "93610000007532658"
+    },
+    {
+      "id": "93610000021787715",
+      "Subject": "Coconuts | Dima + Hossam | Maya Ubud",
+      "deal_id": "93610000007855079"
+    },
+    {
+      "id": "93610000022024579",
+      "Subject": "The wedding shop - Christopher + Vittoria | Intercontinental Fiji | 12.10.26",
+      "deal_id": "93610000004085005"
+    },
+    {
+      "id": "93610000022183042",
+      "Subject": "Transfers | Kimberley + Daniel | Le Meridien Jimbaran",
+      "deal_id": "93610000012834017"
+    },
+    {
+      "id": "93610000022226036",
+      "Subject": "Joanne + Ashton | Sofitel Fiji Resort & Spa | 22.10.26 DW167 | Styling",
+      "deal_id": "93610000006655125"
+    },
+    {
+      "id": "93610000022609069",
+      "Subject": "Joanne + Ashton | Sofitel Fiji Resort & Spa | HMU Trial + Canapes",
+      "deal_id": "93610000006655125"
+    },
+    {
+      "id": "93610000022776157",
+      "Subject": "Sarah | The Edge Bali | 01.10.26 DW129 | ADJUSTMENT | Supplier Meals",
+      "deal_id": "93610000007545503"
+    },
+    {
+      "id": "93610000022776359",
+      "Subject": "Kreshya + Nicholas | Arnalaya Beach House | 16.09.26 DW264 Adjustment | Beverages",
+      "deal_id": "93610000003418012"
+    },
+    {
+      "id": "93610000022789072",
+      "Subject": "Extra Florals | Boyd + Rebecca | Arinara Beach Resort Phuket",
+      "deal_id": "93610000007532658"
+    },
+    {
+      "id": "93610000023731690",
+      "Subject": "Airport Transfer - Christopher + Vittoria | Intercontinental Fiji |",
+      "deal_id": "93610000004085005"
+    },
+    {
+      "id": "93610000023765632",
+      "Subject": "Hannah + Brian | The Uluwatu | 09.10.26 DW296 | Transfers",
+      "deal_id": "93610000004959021"
+    },
+    {
+      "id": "93610000024539089",
+      "Subject": "Jacqueline + Walisha | Le Meridien Jimbaran | 10.10.26 DW375",
+      "deal_id": "93610000010349182"
+    },
+    {
+      "id": "93610000024688773",
+      "Subject": "Flowers - Adjustment | Emily + Anrich | Peppers Seminyak",
+      "deal_id": "93610000010661317"
+    },
+    {
+      "id": "93610000024724077",
+      "Subject": "Final Adjustment | Sheridan & Dallas | Courtyard By Marriott Bali Nusa Dua",
+      "deal_id": "93610000007539704"
+    },
+    {
+      "id": "93610000024736015",
+      "Subject": "Adjustment (Upgrades) - Jess + Chris | Outrigger Fiji | 09.10.26 DW132",
+      "deal_id": "93610000006766075"
+    },
+    {
+      "id": "93610000024736209",
+      "Subject": "Adjustment (Upgrades) - Shantele & Brady | Aksari, Bali | 10.10.26 DW132",
+      "deal_id": "93610000005042037"
+    },
+    {
+      "id": "93610000024865783",
+      "Subject": "Joanne + Ashton | Sofitel Fiji Resort & Spa | 22.10.26 DW167 | Transfers",
+      "deal_id": "93610000006655125"
+    },
+    {
+      "id": "93610000024865822",
+      "Subject": "Joanne + Ashton | Sofitel Fiji Resort & Spa | 22.10.26 DW167 | Styling 2",
+      "deal_id": "93610000006655125"
+    },
+    {
+      "id": "93610000024865881",
+      "Subject": "Joanne + Ashton | Sofitel Fiji Resort & Spa | 22.10.26 DW167 | Sofitel Fireball shots",
+      "deal_id": "93610000006655125"
+    },
+    {
+      "id": "93610000024865920",
+      "Subject": "Joanne + Ashton | Sofitel Fiji Resort & Spa | Adjusted Venue Invoice 2",
+      "deal_id": "93610000006655125"
+    },
+    {
+      "id": "93610000025268098",
+      "Subject": "Claire | Hilton Fiji Beach Resort and Spa Denarau | 07.10.26 DW194 | HMU Adjustment",
+      "deal_id": "93610000007556636"
+    },
+    {
+      "id": "93610000025270208",
+      "Subject": "Furniture Adjustment | Emily + Anrich | Peppers Seminyak",
+      "deal_id": "93610000010661317"
+    },
+    {
+      "id": "93610000025288060",
+      "Subject": "Adjustment - Toni-elly | Shangri-la Yanuca Island Fiji | 19.10.26",
+      "deal_id": "93610000007538755"
+    },
+    {
+      "id": "93610000025586008",
+      "Subject": "Final Venue Adjustment | Mishayla + James | Cape Fahn Hotel",
+      "deal_id": "93610000007552438"
+    },
+    {
+      "id": "93610000025591107",
+      "Subject": "Venue Adjustment - Christopher + Vittoria | Intercontinental Fiji | 12.10.26",
+      "deal_id": "93610000004085005"
+    },
+    {
+      "id": "93610000026048127",
+      "Subject": "Hannah + Brian | The Uluwatu | 09.10.26 DW296 - Pizza Order",
+      "deal_id": "93610000004959021"
+    },
+    {
+      "id": "93610000026283804",
+      "Subject": "Final Venue Adjustment | Sheridan & Dallas | Courtyard By Marriott Bali Nusa Dua",
+      "deal_id": "93610000007539704"
+    },
+    {
+      "id": "93610000026798418",
+      "Subject": "Supplier Meals | Kimberley + Daniel | Le Meridien Jimbaran",
+      "deal_id": "93610000012834017"
+    },
+    {
+      "id": "93610000029241774",
+      "Subject": "Venue Adjustment - Tracey & Nigel | Outrigger Fiji | 31.10.26",
+      "deal_id": "93610000007552537"
+    },
+    {
+      "id": "93610000029259218",
+      "Subject": "Stacey + Russell | Thavorn Beach Phuket | 31.10.26 | Venue Final",
+      "deal_id": "93610000004361007"
+    },
+    {
+      "id": "93610000029465509",
+      "Subject": "Venue Adjustment | Emily + Anrich | Peppers Seminyak",
+      "deal_id": "93610000010661317"
+    },
+    {
+      "id": "93610000029508007",
+      "Subject": "Taylah + Cameron | Pullman Bunker Bay | 07.11.26 DW273 | Venue Adjustment",
+      "deal_id": "93610000003690038"
+    },
+    {
+      "id": "93610000030713551",
+      "Subject": "OTDP Adjustment | Brett + Stephanie | Shangri-la Yanuca Island",
+      "deal_id": "93610000003402002"
+    }
+  ]
+}

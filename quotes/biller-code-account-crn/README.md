@@ -95,12 +95,32 @@ Setup steps in Zoho CRM:
 Limits to know:
 
 - If the CRN is added to the Deal later, the Quote picks it up only the next time that Quote is edited.
-- Existing Quotes are not filled until they are next edited. A one-off backfill through the connector is possible if wanted.
+- Existing Quotes created from 1 Sept 2026 were backfilled on 18 Nov 2026 (see below). Older Quotes are filled only when next edited.
 - Because triggers are suppressed, a rule that needs to react to Account CRN being filled will not fire from this update.
+
+## Backfill of Account CRN on existing Quotes (18 Nov 2026)
+
+Grace's instruction: populate the CRN on all Quotes created from 1 Sept 2026.
+
+- Scope: Quotes with Created Time from 1 Sept 2026 00:00 (Melbourne). 480 Quotes on 201 Deals.
+- Rule: write the Deal's `Account_CRN` to the Quote only where the Quote's was empty, a Deal was linked and the Deal had a CRN.
+- Written through the connector at 11:41 to 11:43, in 5 batches, with an empty trigger list, so no workflow fired. Modified By on these Quotes now reads Admin EW Zoho.
+
+| Group | Count |
+|---|---|
+| Updated | 422 |
+| Already had a CRN (equal to the Deal's) | 1 |
+| Not filled: no Deal linked | 8 |
+| Not filled: Deal has no CRN | 49 (on 27 Deals) |
+
+- Fact: checked after the write with a fresh query and jq. All 422 hold exactly the Deal's CRN, 0 differ, and no Quote with a Deal CRN is left empty.
+- Files: `backfill-2026-11-18/updated.jsonl` (the 422 Quote ids and the CRN written, which is also the undo list) and `backfill-2026-11-18/not_filled.json` (the 8 Quotes with no Deal, the 27 Deals with no CRN and their 49 Quotes).
+- To undo: set `Account_CRN` to empty on the ids in `updated.jsonl`.
+- Quotes created before 1 Sept 2026 were not touched.
 
 ## Next
 
 1. Grace to install the function and the workflow rule (steps above) and report any compile error.
 2. Grace to place both fields on the Quote layout.
 3. Test on a new Quote and read it back through the connector.
-4. Decide on a one-off backfill of existing Quotes.
+4. Decide what to do about the 27 Deals with no Account CRN and the 8 Quotes with no Deal (see the backfill section).

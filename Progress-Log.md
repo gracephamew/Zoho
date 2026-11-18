@@ -3,7 +3,7 @@
 ## Current status (18 Nov 2026)
 
 - Repo `gracephamew/zoho` set up on 18 Nov 2026 as the home for Zoho CRM development work.
-- Quotes: Account CRN and Bpay Biller Code fields exist. The function that copies Account CRN from the Deal is written but not yet installed in Zoho.
+- Quotes: Account CRN and Bpay Biller Code fields exist. Account CRN is filled on 423 of the 480 Quotes created from 1 Sept 2026. The function that copies Account CRN from the Deal is written but not yet installed in Zoho.
 
 ## Open items
 
@@ -12,7 +12,7 @@
 3. Quotes: Grace to change the Bpay Biller Code formula on Quotes to `If(${Quotes.Country (EW)}=='AU','508572','')` in Setup, then confirm. New UK Quotes show 508572 until this is done.
 4. Quotes: confirm whether the Books sync needs the CRN, which affects workflow order.
 5. Zoho CRM licence shows a paid expiry of 24 Nov 2026. Check renewal.
-6. Quotes: decide on a one-off backfill of Account CRN on existing Quotes.
+6. Quotes: 27 Deals have no Account CRN (49 Quotes from 1 Sept stay empty) and 8 Quotes have no Deal. Decide whether those Deals should get a CRN. List in `quotes/biller-code-account-crn/backfill-2026-11-18/not_filled.json`.
 7. Decide whether the Crew Package to Asana automation stays in `gracephamew/crew` or moves here.
 
 ---
@@ -26,6 +26,7 @@
 - 10:48, Grace, move Zoho work into `gracephamew/zoho`.
 - 11:10, Grace, build the automation: on create or edit, if Account CRN is empty, map it from the Deal.
 - 11:25, Grace, make the Quote Biller Code formula match the Deal's.
+- 11:38, Grace, populate Account CRN on all Quotes created from 1 Sept 2026.
 
 **Done**
 - Confirmed the Zoho CRM connector reaches org `7005318614` (production).
@@ -36,6 +37,8 @@
 - Wrote `quotes/biller-code-account-crn/quote_account_crn_from_deal.dg` and the setup steps for a new Quotes workflow rule. Not installed or tested in Zoho.
 
 - Checked Country (EW) on Quotes (`Country_EW`) against the Deal: equal on the 200 newest Quotes with a Deal. Wrote the matching Quote formula for Grace to paste.
+
+- Backfilled Account CRN from the Deal on 422 of the 480 Quotes created from 1 Sept 2026 (triggers off). Verified afterwards: all 422 equal the Deal's CRN, none differ. Not filled: 8 with no Deal, 49 on 27 Deals with no CRN; 1 was already filled.
 
 **Changed**
 - The Quotes work was first logged in `gracephamew/crew`. It now lives here, and the crew log points to this repo.
@@ -51,6 +54,8 @@
 - Existing Quotes show the new formula field as empty straight after creation.
 
 - The Deal formula is `If(${Deals.Country (EW)}=='AU','508572','')`. The connector cannot edit an existing field, so formula changes are made in Setup.
+
+- COQL with `limit 2000` returned all 480 Quotes in one call. `updateRecords` with `"trigger": []` takes 100 records per call and reports Modified By as Admin EW Zoho.
 
 **Next**
 - Grace installs the function and rule; Claude reads a test Quote back through the connector.
