@@ -18,6 +18,7 @@
 9. Images: 10 Venues and 7 Suppliers have no Vendor Code; 10 Products have a SKU with no vendor part.
 10. Images widget: confirm who manages the AWS account, whether S3 pictures are public or private, and whether to use the hybrid (lead image copied into Zoho for Canvas, full gallery by widget). See `images/s3-widget/README.md`.
 11. Products: the 51 Ferry Easy Wedding Crew Bali copies have Product Name in the "•" form, which the existing Product workflow will rewrite as "code . name" on the next edit. Decide which form is wanted. Also confirm the GST Free tax on the copies is right, and check Zoho Books for any items created.
+12. 8 Easy Wedding Crew Bali: 12 single products have no cost because the rate card does not cover them (1 videographer, 1-hour, 2 Hours - 2 Photographers, Content 1 to 3 hours). Ask the contractor, or retire them. Packages still carry Ferry's costs. No products exist yet for 4-hour, 12-hour or family photography rates.
 
 ---
 
@@ -35,6 +36,7 @@
 - 12:25, Grace, sample file of 30 Vendors and up to 200 Products with option 2 file names.
 - 13:44, Grace, outline of the work to build a widget that shows S3 images in Zoho.
 - 14:08, Grace, duplicate the RC Bali - IDR products to the vendor Ferry Easy Wedding Crew Bali - IDR.
+- 15:36, Grace, duplicate the Ferry Easy Wedding Crew Bali products to 8 Easy Wedding Crew Bali - IDR with prices from the Studio 8 sheet; then check the prices against the contractor's rate card and correct Zoho and the sheet.
 
 **Done**
 - Confirmed the Zoho CRM connector reaches org `7005318614` (production).
@@ -56,10 +58,13 @@
 
 - Created 51 products under Ferry Easy Wedding Crew Bali - IDR (`93610000035108815`) as copies of the 51 RC Bali - IDR products, codes `IDRCFJ-7728` to `IDRCFJ-7778`, Status Inactive, Product Name equal to Concat Product Name. Workflows on, as Grace chose. Checked field by field. Details and mapping in `products/duplicate-rc-bali-to-ferry-crew-bali/`.
 
+- Created 51 products under 8 Easy Wedding Crew Bali - IDR (`93610000035149380`), codes `IDRCS8-7779` to `IDRCS8-7829`, Inactive. Set Vendor (Cost + Com) (LC) on the 30 singles from the contractor's rate card (18 priced, 12 cleared as not on the card). Corrected nine cells in the pricing sheet (green) and added a rate card tab. Details in `products/duplicate-ferry-crew-bali-to-8-ew-crew-bali/`.
+
 **Changed**
 - The Quotes work was first logged in `gracephamew/crew`. It now lives here, and the crew log points to this repo.
 
 **Decisions**
+- 8 Easy Wedding Crew Bali costs: the drone add-on is included wherever a product has videographers; products the rate card does not cover have their cost cleared (Grace, 18 Nov 2026).
 - Zoho CRM development work lives in `gracephamew/zoho`, separate from the Zoho to Asana automations in `gracephamew/crew`.
 - The Account CRN copy is a new, separate workflow rule and function, so no existing rule is changed. Its update suppresses triggers, so other Quotes workflows do not fire from it.
 - Bpay Biller Code on Quotes was first a fixed 508572; changed the same day to match the Deal formula, 508572 only when Country (EW) is AU (Grace, 18 Nov 2026).
@@ -77,6 +82,9 @@
 - Products already has image fields: `Record_Image`, `Room_Hero_Image`, `Room_Images` (up to 10 each), `Room_Floor_Plan`. Vendors has `Record_Image`, `Venue_Hero_Images`, `Vendor_Images`.
 
 - Creating a Product with workflows on: Zoho sets Product Code from the SKU, sets Product Active false when Status is Inactive, recalculates AUD and GBP prices, sets Tax by Vendor-Country, and about 4.5 minutes later rewrites Product Name as "code . name". Vendor Tax is mandatory on the DW Services layout. `getRecords` accepts at most 50 fields per call.
+
+- The Studio 8 pricing sheet was 500,000 low on photography (file handling fee left out) and had no drone or video-only lines. "Vendor (Cost + Com) (LC)" is `Original_Charge_LC`. Clearing it makes Zoho set `Cost_Price_LC` to 0 but leaves the AUD cost and unit price.
+- A fresh subagent can send prepared create batches from files, which keeps large payloads out of the main session.
 
 **Next**
 - Grace installs the function and rule; Claude reads a test Quote back through the connector.

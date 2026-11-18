@@ -1,0 +1,52 @@
+﻿Ferry product id,Ferry product code,New product id,New product code,Type,Internal code,Product,Ferry cost LC,Cost from sheet (first applied),Cost now (rate card),Basis
+93610000035151249,IDRCFJ-7728,93610000035159734,IDRCS8-7779,Package Add-on,CT1P2,RC Bali - Photography 2 Hours - 1 photographer,1000000,,1000000,"package, unchanged"
+93610000035159438,IDRCFJ-7729,93610000035159735,IDRCS8-7780,Package Add-on,,RC Bali - Photography 6 Hours - 2 photographers incl. editing,0,,0,"package, unchanged"
+93610000035159439,IDRCFJ-7730,93610000035159736,IDRCS8-7781,Package Add-on,CT2P2V6,"RC Bali - Photography & Videography 6 Hours - 2 photographers, 2 videographers + drone",12000000,,12000000,"package, unchanged"
+93610000035159440,IDRCFJ-7731,93610000035159737,IDRCS8-7782,Package Add-on,CT2P2V8,"RC Bali - Photography & Videography 8 Hours - 2 photographers, 2 videographers + drone",16000000,,16000000,"package, unchanged"
+93610000035159441,IDRCFJ-7732,93610000035159738,IDRCS8-7783,Package Add-on,CT2P2V10,"RC Bali - Photography & Videography 10 Hours - 2 photographers, 2 videographers + drone",20000000,,20000000,"package, unchanged"
+93610000035159442,IDRCFJ-7733,93610000035159739,IDRCS8-7784,Package Add-on,CT2P1V1C6,"RC Bali - Photography, Videography & Content 6 Hours - 2 photographers, 1 videographer + drone, 1 content creator",12000000,,12000000,"package, unchanged"
+93610000035159443,IDRCFJ-7734,93610000035159740,IDRCS8-7785,Package Add-on,CT2P1V1C8,"RC Bali - Photography, Videography & Content 8 Hours - 2 photographers, 1 videographer + drone, 1 content creator",15500000,,15500000,"package, unchanged"
+93610000035159444,IDRCFJ-7735,93610000035159741,IDRCS8-7786,Package Add-on,CT2P1V1C10,"RC Bali - Photography, Videography & Content 10 Hours - 2 photographers, 1 videographer + drone, 1 content creator",19000000,,19000000,"package, unchanged"
+93610000035159445,IDRCFJ-7736,93610000035159742,IDRCS8-7787,Package Add-on,CT2P2V1C6,"RC Bali - Photography, Videography & Content 6 Hours - 2 photographers, 2 videographers + drone, 1 content creator",15000000,,15000000,"package, unchanged"
+93610000035157312,IDRCFJ-7737,93610000035149385,IDRCS8-7788,Package Add-on,CT2P2V1C8,"RC Bali - Photography, Videography & Content 8 Hours - 2 photographers, 2 videographers + drone, 1 content creator",19500000,,19500000,"package, unchanged"
+93610000035157313,IDRCFJ-7738,93610000035149386,IDRCS8-7789,Package Add-on,CT2P2V1C10,"RC Bali - Photography, Videography & Content 10 Hours - 2 photographers, 2 videographers + drone, 1 content creator",24000000,,24000000,"package, unchanged"
+93610000035157314,IDRCFJ-7739,93610000035149387,IDRCS8-7790,Package Add-on,CT1P1V1C4,"RC Bali - Photography, Videography & Content 4 Hours - 1 photographer, 1 videographer + drone, 1 content creator",6000000,,6000000,"package, unchanged"
+93610000035157315,IDRCFJ-7740,93610000035149388,IDRCS8-7791,Package Add-on,CT1P6,RC Bali - Photography 6 Hours - 1 photographer,3000000,,3000000,"package, unchanged"
+93610000035157316,IDRCFJ-7741,93610000035149389,IDRCS8-7792,Package Add-on,CT1P8,RC Bali - Photography 8 Hours - 1 photographer,4000000,,4000000,"package, unchanged"
+93610000035157317,IDRCFJ-7742,93610000035149390,IDRCS8-7793,Package Add-on,CT1P10,RC Bali - Photography 10 Hours - 1 photographer,5000000,,5000000,"package, unchanged"
+93610000035157318,IDRCFJ-7743,93610000035149391,IDRCS8-7794,Package Add-on,CT2P6,RC Bali - Photography 6 Hours - 2 photographers,6000000,,6000000,"package, unchanged"
+93610000035157319,IDRCFJ-7744,93610000035149392,IDRCS8-7795,Package Add-on,CT2P8,RC Bali - Photography 8 Hours - 2 photographers,8000000,,8000000,"package, unchanged"
+93610000035158285,IDRCFJ-7745,93610000035149393,IDRCS8-7796,Package Add-on,CT2P10,RC Bali - Photography 10 Hours - 2 photographers,10000000,,10000000,"package, unchanged"
+93610000035158286,IDRCFJ-7746,93610000035136499,IDRCS8-7797,Package Add-on,CT2P1V6,"RC Bali - Photography & Videography 6 Hours - 2 photographers, 1 videographer + drone",9000000,,9000000,"package, unchanged"
+93610000035158287,IDRCFJ-7747,93610000035136500,IDRCS8-7798,Package Add-on,CT2P1V8,"RC Bali - Photography & Videography 8 Hours - 2 photographers, 1 videographer + drone",12000000,,12000000,"package, unchanged"
+93610000035158288,IDRCFJ-7748,93610000035136501,IDRCS8-7799,Package Add-on,CT2P1V10,"RC Bali - Photography & Videography 10 Hours - 2 photographers, 1 videographer + drone",15000000,,15000000,"package, unchanged"
+93610000035148235,IDRCFJ-7749,93610000035136502,IDRCS8-7800,Single Add-on,CT2P1V1,"RC Bali 1 Hour - 2 Photographers, 1 Videographer",4500000,,,Not on rate card
+93610000035148236,IDRCFJ-7750,93610000035136503,IDRCS8-7801,Single Add-on,CT2P8,RC Bali 8 Hours - 2 Photographers,8000000,7000000,7500000,Photography
+93610000035148237,IDRCFJ-7751,93610000035136504,IDRCS8-7802,Single Add-on,CT2P2V6,"RC Bali 6 Hours - 2 Photographers, 2 Videographers",12000000,11000000,13750000,Photography + videography + drone
+93610000035148238,IDRCFJ-7752,93610000035136505,IDRCS8-7803,Single Add-on,CT2P2V8,"RC Bali 8 Hours - 2 Photographers, 2 Videographers",16000000,14000000,17000000,Photography + videography + drone
+93610000035148239,IDRCFJ-7753,93610000035136506,IDRCS8-7804,Single Add-on,CT2P2V10,"RC Bali 10 Hours - 2 Photographers, 2 Videographers",15000000,17000000,20250000,Photography + videography + drone
+93610000035148240,IDRCFJ-7754,93610000035136507,IDRCS8-7805,Single Add-on,CT1C1,RC Bali 1 Hour - 1 Content Creator,1250000,,,Not on rate card
+93610000035148241,IDRCFJ-7755,93610000035151290,IDRCS8-7806,Single Add-on,CT1C2,RC Bali 2 Hours - 1 Content Creator,1700000,,,Not on rate card
+93610000035148242,IDRCFJ-7756,93610000035151291,IDRCS8-7807,Single Add-on,CT1C3,RC Bali 3 Hours - 1 Content Creator,2300000,,,Not on rate card
+93610000035148243,IDRCFJ-7757,93610000035151292,IDRCS8-7808,Single Add-on,CT1C4,RC Bali 4 Hours - 1 Content Creator,2500000,,1500000,Content
+93610000035148244,IDRCFJ-7758,93610000035151293,IDRCS8-7809,Single Add-on,CT1C6,RC Bali 6 Hours - 1 Content Creator,3000000,,2000000,Content
+93610000035142383,IDRCFJ-7759,93610000035151294,IDRCS8-7810,Single Add-on,CT1C8,RC Bali 8 Hours - 1 Content Creator,3500000,,2500000,Content
+93610000035142384,IDRCFJ-7760,93610000035151295,IDRCS8-7811,Single Add-on,CT1C10,RC Bali 10 Hours - 1 Content Creator,4000000,,3000000,Content
+93610000035142385,IDRCFJ-7761,93610000035151296,IDRCS8-7812,Single Add-on,CT2P2V1C6,"RC Bali 6 Hours - 2 Photographers, 2 Videographers, 1 Content Creator",15000000,13500000,15750000,Photography + videography + drone + content
+93610000035142386,IDRCFJ-7762,93610000035151297,IDRCS8-7813,Single Add-on,CT2P2V1C8,"RC Bali 8 Hours - 2 Photographers, 2 Videographers, 1 Content Creator",19500000,17000000,19500000,Photography + videography + drone + content
+93610000035142387,IDRCFJ-7763,93610000035151298,IDRCS8-7814,Single Add-on,CT2P2V1C10,"RC Bali 10 Hours - 2 Photographers, 2 Videographers, 1 Content Creator",24000000,20500000,23250000,Photography + videography + drone + content
+93610000035142388,IDRCFJ-7764,93610000035151596,IDRCS8-7815,Single Add-on,CT2P1V1C6,"RC Bali 6 Hours - 2 Photographers, 1 Videographer, 1 Content Creator",12000000,10750000,,Not on rate card
+93610000035142389,IDRCFJ-7765,93610000035151597,IDRCS8-7816,Single Add-on,CT2P1V1C8,"RC Bali 8 Hours - 2 Photographers, 1 Videographer, 1 Content Creator",15500000,13500000,,Not on rate card
+93610000035142390,IDRCFJ-7766,93610000035151598,IDRCS8-7817,Single Add-on,CT2P1V1C10,"RC Bali 10 Hours - 2 Photographers, 1 Videographer, 1 Content Creator",19000000,16250000,,Not on rate card
+93610000035142391,IDRCFJ-7767,93610000035151599,IDRCS8-7818,Single Add-on,CT2P6,RC Bali 6 Hours - 2 Photographers,6000000,5500000,6000000,Photography
+93610000035142392,IDRCFJ-7768,93610000035151600,IDRCS8-7819,Single Add-on,CT2P8,RC Bali 8 Hours - 2 Photographers,8000000,7000000,7500000,Photography
+93610000035152419,IDRCFJ-7769,93610000035151601,IDRCS8-7820,Single Add-on,CT2P10,RC Bali 10 Hours - 2 Photographers,10000000,8500000,9000000,Photography
+93610000035152420,IDRCFJ-7770,93610000035151602,IDRCS8-7821,Single Add-on,CT2P2,RC Bali 2 Hours - 2 Photographers,17500000,,,Not on rate card
+93610000035152421,IDRCFJ-7771,93610000035151603,IDRCS8-7822,Single Add-on,CT2V6,RC Bali 6 Hours - 2 Videographers,6000000,,7750000,Videography + drone
+93610000035152422,IDRCFJ-7772,93610000035151604,IDRCS8-7823,Single Add-on,CT2V8,RC Bali 8 Hours - 2 Videographers,8000000,,9500000,Videography + drone
+93610000035152423,IDRCFJ-7773,93610000035151902,IDRCS8-7824,Single Add-on,CT2V10,RC Bali 10 Hours - 2 Videographers,10000000,,11250000,Videography + drone
+93610000035152424,IDRCFJ-7774,93610000035151903,IDRCS8-7825,Single Add-on,CT2P1V6,"RC Bali 6 Hours - 2 Photographers, 1 Videographer",9000000,8250000,,Not on rate card
+93610000035152425,IDRCFJ-7775,93610000035151904,IDRCS8-7826,Single Add-on,CT2P1V8,"RC Bali 8 Hours - 2 Photographers, 1 Videographer",12000000,10500000,,Not on rate card
+93610000035152426,IDRCFJ-7776,93610000035151905,IDRCS8-7827,Single Add-on,CT2P1V10,"RC Bali 10 Hours - 2 Photographers, 1 Videographer",15000000,12750000,,Not on rate card
+93610000035152427,IDRCFJ-7777,93610000035151906,IDRCS8-7828,Single Add-on,CT2P1V1C1,"RC Bali 1 Hour - 2 Photographers, 1 Videographer, 1 Content Creator",5750000,,,Not on rate card
+93610000035152428,IDRCFJ-7778,93610000035151907,IDRCS8-7829,Single Add-on,,RC Bali 6 Hours - 1 Content Creator,3000000,,2000000,Content 6h

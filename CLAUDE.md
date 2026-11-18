@@ -18,6 +18,7 @@ The Zoho to Asana automations (Crew Package to Asana, Alec's Social Content) are
 | Images: S3 file naming for Vendor and Product pictures | `images/naming-structure/` | Options written 18 Nov 2026. Awaiting Grace's choice. |
 | Images: widget to show S3 pictures on Vendor and Product pages | `images/s3-widget/` | Outline written 18 Nov 2026. Not started. |
 | Products: RC Bali - IDR duplicated to Ferry Easy Wedding Crew Bali - IDR | `products/duplicate-rc-bali-to-ferry-crew-bali/` | Done 18 Nov 2026. 51 copies, Inactive. |
+| Products: Ferry Easy Wedding Crew Bali duplicated to 8 Easy Wedding Crew Bali - IDR, with rate card costs | `products/duplicate-ferry-crew-bali-to-8-ew-crew-bali/` | Done 18 Nov 2026. 51 copies, Inactive. 12 singles have no cost. |
 
 ## 2. Where things are
 
@@ -65,6 +66,7 @@ It has no tools for Deluge functions, workflow rules, schedules, custom buttons,
 |---|---|---|---|---|
 | Zoho CRM (AU DC) | Claude sessions, through the Zoho CRM connector | Easy Weddings Travel Pty Ltd, org `7005318614`, production | claude.ai connector settings | 18 Nov 2026, connected |
 | Google Drive connector | Claude sessions | Project folder above | claude.ai connector settings | 18 Nov 2026, connected |
+| Google Sheets connector | Claude sessions | Pricing sheet `1_Pj72StD1dfa3-dUlM2IDnHPWMTnxzwMOE7py5HWPEA` (Photography Finance - WS Price Studio 8) | claude.ai connector settings | 18 Nov 2026, connected |
 | GitHub | This repo | `gracephamew/zoho` (private) | claude.ai GitHub connection | 18 Nov 2026 |
 
 Note: the Zoho CRM licence (Zoho One Enterprise, 18 users) shows a paid expiry of 24 Nov 2026 (checked 18 Nov 2026).
