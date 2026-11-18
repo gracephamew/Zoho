@@ -30,6 +30,7 @@
 - 11:25, Grace, make the Quote Biller Code formula match the Deal's.
 - 11:38, Grace, populate Account CRN on all Quotes created from 1 Sept 2026.
 - 12:02, Grace, show S3-hosted product images in CRM and Canvas; analyse Vendors and Products and propose image file naming options.
+- 12:25, Grace, sample file of 30 Vendors and up to 200 Products with option 2 file names.
 
 **Done**
 - Confirmed the Zoho CRM connector reaches org `7005318614` (production).
@@ -44,6 +45,8 @@
 - Backfilled Account CRN from the Deal on 422 of the 480 Quotes created from 1 Sept 2026 (triggers off). Verified afterwards: all 422 equal the Deal's CRN, none differ. Not filled: 8 with no Deal, 49 on 27 Deals with no CRN; 1 was already filled.
 
 - Read-only profile of 542 Vendors and 7,349 Products for image naming. Wrote `images/naming-structure/README.md` with four naming options and a recommendation. Nothing changed in Zoho or S3.
+
+- Built `images/naming-structure/sample-option-2.csv` from live Zoho data: 10 Venues, 20 Suppliers and 183 of their active Products (70 rooms), each with its S3 folder and example file names in the option 2 structure.
 
 **Changed**
 - The Quotes work was first logged in `gracephamew/crew`. It now lives here, and the crew log points to this repo.

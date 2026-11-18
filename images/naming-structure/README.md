@@ -141,6 +141,10 @@ The vendor folder under `products/` is taken from the front of the SKU, not from
 6. One master size, or also smaller copies. If smaller copies are wanted, add a size word at the end, for example `_thumb`, rather than a second name.
 7. Whether the same files will ever be public (website, brochures). If yes, option 3 becomes more attractive.
 
+## Sample
+
+`sample-option-2.csv` shows option 2 on real records: 10 Venues, 20 Suppliers and 183 of their active Products (70 rooms), with the S3 folder and example file names for each. The file names are examples only; no such files exist yet.
+
 ## Not done
 
 - No files have been renamed and nothing has been changed in Zoho or S3.
