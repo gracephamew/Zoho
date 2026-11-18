@@ -58,7 +58,7 @@ From Grace's screenshots of Setup, Workflow Rules, 18 Nov 2026. Criteria and fun
 
 ## The automation (written 18 Nov 2026, not yet installed)
 
-Grace's instruction: on create or edit, if Account CRN is empty, map it from the Deal.
+Grace's instruction: on create or edit, if Account CRN is empty and the Deal is not empty, map it from the Deal.
 
 Design: a new, separate workflow rule with its own function, so no existing rule or function is changed.
 
@@ -74,7 +74,7 @@ Setup steps in Zoho CRM:
 3. Paste the whole file so the signature is line 1. If Zoho shows a different API name in the right-hand panel, change the name in line 1 to match it exactly. Save.
 4. Setup, Automation, Workflow Rules, Create Rule. Module: Quotes. Name: Quote Account CRN From Deal.
 5. When: Record action, Create or Edit. Leave "Repeat this workflow whenever a quote is edited" ticked.
-6. Condition: Account CRN is empty.
+6. Condition: Account CRN is empty AND Deal Name is not empty (pattern `1 and 2`).
 7. Instant action: Function, choose the function above, map `quoteId` to Quotes, Quote Id. Save and switch on.
 8. Test: create a Quote on a Deal that has an Account CRN, then tell Claude the Quote, so it can be read back through the connector.
 
