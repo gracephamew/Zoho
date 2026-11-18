@@ -17,6 +17,7 @@
 8. Images: Grace to choose a file naming option (`images/naming-structure/README.md`) and answer its seven questions, including whether S3 files are public and how re-issued products keep their pictures.
 9. Images: 10 Venues and 7 Suppliers have no Vendor Code; 10 Products have a SKU with no vendor part.
 10. Images widget: confirm who manages the AWS account, whether S3 pictures are public or private, and whether to use the hybrid (lead image copied into Zoho for Canvas, full gallery by widget). See `images/s3-widget/README.md`.
+11. Products: the 51 Ferry Easy Wedding Crew Bali copies have Product Name in the "•" form, which the existing Product workflow will rewrite as "code . name" on the next edit. Decide which form is wanted. Also confirm the GST Free tax on the copies is right, and check Zoho Books for any items created.
 
 ---
 
@@ -33,6 +34,7 @@
 - 12:02, Grace, show S3-hosted product images in CRM and Canvas; analyse Vendors and Products and propose image file naming options.
 - 12:25, Grace, sample file of 30 Vendors and up to 200 Products with option 2 file names.
 - 13:44, Grace, outline of the work to build a widget that shows S3 images in Zoho.
+- 14:08, Grace, duplicate the RC Bali - IDR products to the vendor Ferry Easy Wedding Crew Bali - IDR.
 
 **Done**
 - Confirmed the Zoho CRM connector reaches org `7005318614` (production).
@@ -51,6 +53,8 @@
 - Built `images/naming-structure/sample-option-2.csv` from live Zoho data: 10 Venues, 20 Suppliers and 185 of their active Products (70 rooms), each with its S3 folder and example file names in the option 2 structure.
 
 - Wrote `images/s3-widget/README.md`: outline of the widget build (eight steps), including the Canvas limit and a hybrid approach. Outline only.
+
+- Created 51 products under Ferry Easy Wedding Crew Bali - IDR (`93610000035108815`) as copies of the 51 RC Bali - IDR products, codes `IDRCFJ-7728` to `IDRCFJ-7778`, Status Inactive, Product Name equal to Concat Product Name. Workflows on, as Grace chose. Checked field by field. Details and mapping in `products/duplicate-rc-bali-to-ferry-crew-bali/`.
 
 **Changed**
 - The Quotes work was first logged in `gracephamew/crew`. It now lives here, and the crew log points to this repo.
@@ -71,6 +75,8 @@
 
 - `Vendor_Code` (445 of 542, unique) and `Product_Code` (all 7,349, unique, shape vendor code, hyphen, global counter) are clean and safe for file names. Names are not. There is no field linking re-issued products; the SKU counter is not a per-vendor series.
 - Products already has image fields: `Record_Image`, `Room_Hero_Image`, `Room_Images` (up to 10 each), `Room_Floor_Plan`. Vendors has `Record_Image`, `Venue_Hero_Images`, `Vendor_Images`.
+
+- Creating a Product with workflows on: Zoho sets Product Code from the SKU, sets Product Active false when Status is Inactive, recalculates AUD and GBP prices, sets Tax by Vendor-Country, and about 4.5 minutes later rewrites Product Name as "code . name". Vendor Tax is mandatory on the DW Services layout. `getRecords` accepts at most 50 fields per call.
 
 **Next**
 - Grace installs the function and rule; Claude reads a test Quote back through the connector.
