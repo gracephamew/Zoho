@@ -148,7 +148,7 @@ What the bill data shows against this rule (read-only COQL, 1,263 bills with a B
 - Fact: the rule's condition excludes only "Cancelled Deal". 7 bills with Status "Voided", a future issue date and no Books id pass the condition. Unverified whether the function skips voided bills or bills that already have a Books id; that needs the code.
 - Fact: 14 voided bills carry a Books id. For their state in Books, ask Zoho Books.
 
-## Live code read 19/11/2026 18:10 (pasted by Grace, kept unchanged in `live-code-2026-11-19/`)
+## Live code read 19/11/2026 18:02 (pasted by Grace, kept unchanged in `live-code-2026-11-19/`)
 
 Two functions: `SyncBillToZohoBooks.dg` (argument `recid`) and `CreateVendorPaymentSchedule1.dg` (argument `poId`). Which Setup link belongs to which, and the Associations of each, are still Unverified. The code of `CreateVendorPay` ("Create Vendor Payment- Parent"), `CreateVendorBills`, `Create_1_VendorBill` and `Recreate_VPS` has not been seen by Claude Code.
 

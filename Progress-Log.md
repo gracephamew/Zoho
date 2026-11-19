@@ -31,7 +31,7 @@
 - 17:14, Grace, update context from the Drive folder `_Claude_Project_Memory`.
 - 17:17, Grace, brief for repairing the PO to Vendor Bills workflow; Phase 1 (read-only) started.
 - 17:59, Grace, screenshot of the rule `SyncBillsToZohoBooks` and links to two functions.
-- 18:10, Grace, pasted the code of `SyncBillToZohoBooks` and `CreateVendorPaymentSchedule1`.
+- 18:02, Grace, pasted the code of `SyncBillToZohoBooks` and `CreateVendorPaymentSchedule1`.
 
 **Done**
 - Read the memory index `MEMORY.md` (12 Nov 2026), `project-knowledge-maintenance.md`, and the five files added since the index: the PO bill repair brief for Claude Code, the PO to Vendor Bills framework, the `CreateVendorPaymentSchedule1` v4 draft code, the PO record lock note (all 19 Nov) and the Installment Calculator summary (17 Nov).
