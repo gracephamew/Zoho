@@ -201,3 +201,64 @@ Defects:
 | Failure signal | Fact: none |
 
 Still needed to close Phase 1: the Associations panels of the two linked functions; the action shown on the rule "Create Vendor Payment Schedule" (`93610000004176388`); the code of `CreateVendorPay`, `CreateVendorBills`, `Create_1_VendorBill` and `Recreate_VPS` if Grace wants them in the map rather than taken from the source documents.
+
+## Remaining four functions read 19/11/2026 18:10 (pasted by Grace, kept unchanged in `live-code-2026-11-19/`)
+
+`CreateVendorPay.dg` (v2, 16/09/2026), `CreateVendorBills.dg`, `Create_1_VendorBill.dg`, `Recreate_VPS.dg`. With these, all six functions in the chain have been read. Associations are still Unverified.
+
+### The chain as the code has it (Fact)
+
+1. `CreateVendorPay(recid)`: stops if the PO has any related Vendor Bill. If the PO has a VPS, it takes the first one returned and calls `Create_1_VendorBill` and `CreateVendorBills` on it. Otherwise it builds a VPS (version 1, Status Draft, rows from Vendor Payment 1 to 4), updates Services Booked and the PO, then calls the same two functions.
+2. `Create_1_VendorBill(vpsId)`: creates a bill from row 1 of the VPS, links it to row 1, then calls `SyncBillToZohoBooks` at once, whatever the Bill Issue Date.
+3. `CreateVendorBills(vpsId)`: creates a bill for every row with no Bill, then sets VPS Status "Bill Issued".
+4. `CreateVendorPaymentSchedule1(poId)`: the rebuild path, described above. Calls `Recreate_VPS`.
+5. `Recreate_VPS`: builds a new VPS only. No bills.
+6. `SyncBillToZohoBooks(billId)`: also run by the date rule on Bill Issue Date at 08:00.
+
+### Main finding: Bill 1 is sent to Books twice by design
+
+- Fact: `Create_1_VendorBill` syncs Bill 1 the moment it is created. Since `CreateVendorPay` v2 (16/09/2026), Bill 1's issue date is its due date minus 7 days, usually in the future.
+- Fact: the date rule then runs `SyncBillToZohoBooks` on that bill again on its issue date, and that function has no check for an existing Books id.
+- Fact: 26 bills are in Books today with an issue date still to come. The rule will run on each of them.
+- Unverified: whether Books refuses the second post because the bill number already exists for that vendor. If it refuses, the second run fails silently and does no harm. If it accepts, Books holds two bills and the CRM `Zoho_Books_Bill_Id` is overwritten with the second. How to check: in Zoho Books, search one Bill 1 created after 16/09/2026 whose issue date has passed, for example CRM bill `93610000022578179` (created 17/09/2026, issue date 23/09/2026), and count the Books bills with its number.
+- Fact: the header of `CreateVendorPay` v2 says Bill 1 now syncs 7 days before it is due "like every other bill". The code does not do that; Bill 1 still syncs at creation.
+
+### Other defects (Fact unless marked)
+
+`CreateVendorPay`:
+1. The "bills already exist" guard counts voided bills too. After a rebuild, the new VPS can never get bills through this function.
+2. When a VPS exists and no bill does, it uses the first VPS returned (not the newest, not checked for Voided) and makes Bill 1 on it without checking that row 1 is free. 9 POs are in this state now.
+3. The related list names "Vendor_Bills" and "Vendor_Payment_Schedule" are Unverified against the live related lists. If either is wrong, its guard does not work.
+
+`Create_1_VendorBill`:
+4. No check that row 1 already has a Bill.
+5. If the bill is not created, it still calls the sync with an empty id.
+6. The product search text has a leading space (" Vendor Bill 1"), and an empty result is read with `.get(0)`.
+
+`CreateVendorBills`:
+7. The product is chosen by a counter, not by the row's payment number. The first row without a bill always gets "Vendor Bill 2".
+8. If the product is not found, a bill with no lines is created. It can never sync.
+9. VPS Status is set to "Bill Issued" even when a bill failed to create.
+10. Bills take MoR from the Deal. A Deal with no MoR gives a bill with no MoR, which the sync skips silently (25 bills today).
+
+`Recreate_VPS`:
+11. It writes the row date to `Bill_Issue_Date`. The field's API name is `Bill_Issue_date`. View: the issue date is not saved on rebuilt rows, so their bills have no issue date and the date rule never syncs them. 26 bills have no Bill Issue Date.
+12. It still uses the old rules: Payment 1 due from the approved date, issue date 30 days before due. Grace's 16/09/2026 rule (PO dates are due dates, issue 7 days before) is not applied here.
+13. It does not write Tax, Mor_Tax or VPS Status. With Mor_Tax empty, `CreateVendorBills` would mark the bill "GST 10%".
+14. It reads the PO subform `Product_Details`; `CreateVendorPay` reads `Purchase_Items`. Unverified which is right.
+15. The amounts arrive as Int arguments. Unverified whether cents are lost.
+16. It skips the first N payments by number, assuming the paid bills are always the first N.
+
+### Wiring map, state at 18:10
+
+| Link | State |
+|---|---|
+| Rule `93610000004176388` (PO Status "Vendor Bills Created in CRM") calls `CreateVendorPay(recid)` | View, strong: the argument name matches. Associations not seen. |
+| What calls `CreateVendorPaymentSchedule1(poId)` | Unverified. View: a rule or button on "Recreate Vendor Bills in CRM". |
+| `CreateVendorPay` -> `Create_1_VendorBill` -> `SyncBillToZohoBooks` (immediate) | Fact (code) |
+| `CreateVendorPay` -> `CreateVendorBills` | Fact (code) |
+| `CreateVendorPaymentSchedule1` -> `CreateVendorPay` or `Recreate_VPS` | Fact (code) |
+| Date rule `93610000004897404` -> `SyncBillToZohoBooks` | Fact (screenshot) |
+| Failure signal anywhere in the chain | Fact: none |
+
+To close Phase 1: the Associations panel of `CreateVendorPay` and of `CreateVendorPaymentSchedule1`, then Grace's sign-off.

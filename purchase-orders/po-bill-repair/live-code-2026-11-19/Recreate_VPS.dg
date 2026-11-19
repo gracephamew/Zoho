@@ -1,0 +1,184 @@
+string automation.Recreate_VPS(Int recid,Int paidAmount,Int nextVersion,Int paidBillCount)
+{
+poRec = zoho.crm.getRecordById("Purchase_Orders",recid);
+info "Purchase order :" + poRec;
+dealRec = zoho.crm.getRecordById("Deals",poRec.get("Deal_Name").get("id"));
+dealOccasion = dealRec.get("Wedding");
+// fetchVendor = zoho.crm.getRecordById("Vendor_Payment_Schedule",93610000004079066);
+// info fetchVendor;
+createVP = Map();
+// Basic Info
+createVP.put("Name",poRec.get("PO_Auto_Number"));
+createVP.put("Currency",poRec.get("Currency"));
+if(dealOccasion != null && dealOccasion != "")
+{
+	createVP.put("Occasion",dealOccasion.get("id"));
+}
+createVP.put("Exchange_Rate",poRec.get("Exchange_Rate"));
+createVP.put("Vendor_Email",poRec.get("Vendor_email"));
+createVP.put("VPS_Version",nextVersion);
+createVP.put("PO_Version",nextVersion);
+createVP.put("Vendor_Number",poRec.get("Vendor_Name").get("name"));
+// Deal & PO Linking
+createVP.put("Deal_Name",poRec.get("Deal_Name").get("id"));
+createVP.put("Deal_Number",poRec.get("Deal_Number_for_PO"));
+createVP.put("PO_Number",poRec.get("Custom_PO_Number"));
+createVP.put("Purchase_Order",poRec.get("id"));
+//  Vendor
+createVP.put("Vendor_Name",poRec.get("Vendor_Name").get("id"));
+vendorPaymentsList = List();
+Grand_Total = poRec.get("Grand_Total");
+info Grand_Total;
+remainingAmount = paidAmount;
+info remainingAmount;
+for each  lineItem in poRec.get("Product_Details")
+{
+	vpLine = Map();
+	vpLine.put("Product",lineItem.get("product").get("id"));
+	vpLine.put("Scheduled_Amount_VC",lineItem.get("total_after_discount"));
+	vpLine.put("Balance_Amount",lineItem.get("total_after_discount"));
+	// 🔹 Dates (adjust logic as needed)
+	vpLine.put("Due_Date",poRec.get("Due_Date"));
+	vpLine.put("Bill_Issue_Date",poRec.get("Due_Date"));
+	vpLine.put("Bill_Due_Remainder_date",poRec.get("Due_Date"));
+	vendorPaymentsList.add(vpLine);
+}
+Vendor_Payment_1_Due_days = ifnull(poRec.get("Vendor_Payment_1_Due_Days1"),0);
+info "Vendor_Payment_1_Due_days: " + Vendor_Payment_1_Due_days;
+if(poRec.get("PO_Approved_Date") != null && poRec.get("PO_Approved_Date") != "")
+{
+	vendor_payment1_date = poRec.get("PO_Approved_Date").addDay(Vendor_Payment_1_Due_days);
+}
+else
+{
+	vendor_payment1_date = poRec.get("Created_Time").toDate().addDay(Vendor_Payment_1_Due_days);
+}
+info "Payment 1 Date : " + vendor_payment1_date;
+// Map Due Dates & Amounts 
+paymentConfig = List();
+paymentConfig.add({"no":1,"amount":poRec.get("Vendor_Payment_1"),"date":vendor_payment1_date});
+paymentConfig.add({"no":2,"amount":poRec.get("Vendor_Payment_2"),"date":poRec.get("Vendor_Payment_2_Date")});
+paymentConfig.add({"no":3,"amount":poRec.get("Vendor_Payment_3"),"date":poRec.get("Vendor_Payment_3_Date")});
+paymentConfig.add({"no":4,"amount":poRec.get("Vendor_Payment_4"),"date":poRec.get("Vendor_Payment_4_Date")});
+/* ---------- BUILD PAYMENT VERSIONS ---------- */
+vendorPaymentVersions = List();
+versionNo = 1;
+PaymentVersion = paidBillCount;
+cumulativeScheduled = 0;
+for each  p in paymentConfig
+{
+	if(p.get("no") > paidBillCount && ifnull(p.get("amount"),0) > 0)
+	{
+		PaymentVersion = PaymentVersion + 1;
+		amount = p.get("amount");
+		//amount = amount.round(2);
+		cumulativeScheduled = cumulativeScheduled + amount;
+		balanceDue = remainingAmount - cumulativeScheduled;
+		balanceDue = balanceDue.round(2);
+		info "balanceDue :" + balanceDue;
+		if(balanceDue < 0)
+		{
+			balanceDue = 0;
+		}
+		poDueDate = p.get("date").toDate();
+		billIssueDate = poDueDate.addDay(-30);
+		dueReminderDate = poDueDate.addDay(-7);
+		paymentVersion = Map();
+		paymentVersion.put("Payment_Version",PaymentVersion.toString());
+		paymentVersion.put("Payment_Name","Payment " + PaymentVersion);
+		paymentVersion.put("Due_Date",poDueDate);
+		paymentVersion.put("Bill_Issue_Date",billIssueDate);
+		paymentVersion.put("Due_Reminder_Date",dueReminderDate);
+		paymentVersion.put("Scheduled_Amount_Vendor_Currency",amount);
+		paymentVersion.put("Balance_due",balanceDue);
+		paymentVersion.put("Status","Pending");
+		vendorPaymentVersions.add(paymentVersion);
+		versionNo = versionNo + 1;
+	}
+}
+createVP.put("Vendor_Payment_Version",vendorPaymentVersions);
+createVP.put("Product_Detail",vendorPaymentsList);
+info "post map :";
+info createVP;
+/* ---------- CREATE VPS ---------- */
+response = zoho.crm.createRecord("Vendor_Payment_Schedules",createVP,{"trigger":{"workflow"}});
+info "creator vps :";
+info response;
+if(response.get("id") != null)
+{
+	return response.get("id").toString();
+}
+return "";
+// Payment 1
+// pay1 = (remainingAmount * Vendor_Payment_1Percent) / 100;
+// pay2 = (remainingAmount * Vendor_Payment_2Percent) / 100;
+// pay3 = (remainingAmount * Vendor_Payment_3Percent) / 100;
+// pay4 = (remainingAmount * Vendor_Payment_4Percent) / 100;
+// p1 = Map();
+// p1.put("due_date",poRec.get("Vendor_Payment_1_Date"));
+// p1.put("amount",pay1);
+// paymentConfigList.add(p1);
+// // Payment 2
+// p2 = Map();
+// p2.put("due_date",poRec.get("Vendor_Payment_2_Date"));
+// p2.put("amount",pay2);
+// paymentConfigList.add(p2);
+// //  Payment 3
+// p3 = Map();
+// p3.put("due_date",poRec.get("Vendor_Payment_3_Date"));
+// p3.put("amount",pay3);
+// paymentConfigList.add(p3);
+// // Payment 4
+// p4 = Map();
+// p4.put("due_date",poRec.get("Vendor_Payment_4_Date"));
+// p4.put("amount",pay4);
+// paymentConfigList.add(p4);
+// info "paymentConfigList :";
+// info paymentConfigList;
+// versionNo = 1;
+// cumulativeScheduled = 0;
+// for each  paymentCfg in paymentConfigList
+// {
+// 	dueDt = paymentCfg.get("due_date");
+// 	amount = paymentCfg.get("amount");
+// 	info amount;
+// 	info dueDt;
+// 	// Skip if either date or amount is missing / zero
+// 	if(dueDt != null && amount != null && amount > 0)
+// 	{
+// 		paymentVersion = Map();
+// 		poDueDate = dueDt.toDate();
+// 		//  Date calculations
+// 		billIssueDate = poDueDate.addDay(-30);
+// 		dueReminderDate = poDueDate.addDay(-7);
+// 		cumulativeScheduled = cumulativeScheduled + amount;
+// 		balanceDue = remainingAmount - cumulativeScheduled;
+// 		if(balanceDue < 0)
+// 		{
+// 			balanceDue = 0;
+// 		}
+// 		// Incremental Name & Version
+// 		paymentVersion.put("Payment_Version",versionNo.toString());
+// 		paymentVersion.put("Payment_Name","Payment " + versionNo);
+// 		paymentVersion.put("Due_Date",poDueDate);
+// 		paymentVersion.put("Bill_Issue_date",billIssueDate);
+// 		paymentVersion.put("Due_Reminder_Date",dueReminderDate);
+// 		paymentVersion.put("Scheduled_Amount_Vendor_Currency",amount);
+// 		paymentVersion.put("Balance_due",balanceDue);
+// 		paymentVersion.put("Status","Pending");
+// 		vendorPaymentVersions.add(paymentVersion);
+// 		versionNo = versionNo + 1;
+// 	}
+// }
+// createVP.put("Vendor_Payment_Version",vendorPaymentVersions);
+// createVP.put("Product_Detail",vendorPaymentsList);
+// createVP.put("Status","Draft");
+// info createVP;
+// response = zoho.crm.createRecord("Vendor_Payment_Schedules",createVP,{"trigger":{"workflow"}});
+// info response;
+// if(response.get("id") != null)
+// {
+// 	standalone.Create_1_VendorBill(response.get("id"));
+// }
+//}
+}

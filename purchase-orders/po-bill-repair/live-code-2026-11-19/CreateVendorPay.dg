@@ -1,0 +1,305 @@
+void automation.CreateVendorPay(Int recid)
+{
+/*
+	  ==================================================================
+	  CREATE VENDOR PAYMENT SCHEDULE. automation.CreateVendorPay
+	  v2, 16/09/2026. Bill due dates come from the PO's Vendor Payment
+	  1 to 4 Dates. Bill issue date is due date minus 7 days.
+	  ==================================================================
+	  LINE 1 MUST MATCH THE FUNCTION API NAME, CHARACTER FOR CHARACTER.
+	  Category automation, returns void. Argument recid, Int, the PO id.
+	  Nothing above the signature. Nothing below the closing brace.
+	  ==================================================================
+	  WRITE-SET DIFF, v1 (the live code Grace pasted on 16/09/2026) -> v2
+	  	Added: none.
+	  	Removed: none.
+	  	Unchanged: every field. The VPS create map, the Product_Detail
+	  		rows, the Vendor_Payment_Version rows, the Services Booked
+	  		Supplier_Status write, the PO subform Vendor_Status write, the
+	  		PO_Approval_Note write, the two calls to Create_1_VendorBill and
+	  		CreateVendorBills, and the createRecord trigger list.
+	  	Values that change, same fields:
+	  		Vendor_Payment_Version.Due_Date for Payment 1.
+	  		  v1: PO Approved Date plus Vendor Payment 1 Due Days, or PO
+	  		      Created date plus the days when there is no approved date.
+	  		  v2: the PO field Vendor Payment 1 Date. The v1 rule is kept
+	  		      ONLY as a fallback when Vendor Payment 1 Date is blank.
+	  		Vendor_Payment_Version.Bill_Issue_date for every payment.
+	  		  v1: Payment 1 on the PO Approved Date (or Created date).
+	  		      Payments 2 to 4 on due date minus 30 days.
+	  		  v2: every payment on its due date minus 7 days.
+	  		Purchase_Orders.PO_Approval_Note text.
+	  		  v1: written when PO Approved Date is blank.
+	  		  v2: written when the fallback was used for Payment 1, and
+	  		      says which date it fell back to.
+	  ==================================================================
+	  GRACE'S RULE, 16/09/2026
+	  	Vendor Payment 1, 2, 3 and 4 Dates on the PO ARE the bill due
+	  	dates. The bill issue date is 7 days before the due date.
+	  	Payments 2, 3 and 4 already used their PO date as the due date in
+	  	v1. Payment 1 did not. It ignored Vendor Payment 1 Date and
+	  	recalculated from the approved date. On the PO Grace showed,
+	  	approved 28/08/2026 with Vendor Payment 1 Date 08/01/2028, v1
+	  	made bill 1 due 11/09/2026. v2 makes it due 08/01/2028 and
+	  	issues it on 01/01/2028.
+
+	  ⚠ WHAT THIS CHANGES DOWNSTREAM. View, from the project notes.
+	  	The Books sync of Vendor Bills runs off Bill Issue Date. Bill 1
+	  	used to carry the approved date, so it synced to Books within a
+	  	minute of creation. With v2, bill 1 carries due minus 7 and syncs
+	  	7 days before it is due, like every other bill. If Finance relies
+	  	on bill 1 appearing in Books on approval day, that stops.
+	  	Unverified: whether Create_1_VendorBill or CreateVendorBills
+	  	recalculate any date themselves. How to check: Setup > Developer
+	  	Hub > Functions, open each and search for Bill_Issue.
+
+	  FALLBACK FOR A BLANK VENDOR PAYMENT 1 DATE
+	  	Fact 16/09/2026: five approved POs had Vendor Payment 1 Date
+	  	blank because UpdatePOApprovedStatusInSB stopped stamping it.
+	  	So the v1 rule stays as the fallback: PO Approved Date plus
+	  	Vendor Payment 1 Due Days, or PO Created date plus the days.
+	  	When the fallback is used, PO Approval Note says so.
+	  ==================================================================
+*/
+rel_bills = zoho.crm.getRelatedRecords("Vendor_Bills","Purchase_Orders",recid);
+if(rel_bills.size() > 0)
+{
+	info "Vendor Bills already exist. Bill recreation feature is blocked. ";
+	return;
+}
+rel_vps = zoho.crm.getRelatedRecords("Vendor_Payment_Schedule","Purchase_Orders",recid);
+if(rel_vps.size() > 0)
+{
+	vps_id = rel_vps.get(0).get("id");
+	info vps_id;
+	info "Calling Create First Vendor Bill function";
+	vb_id = standalone.Create_1_VendorBill(vps_id);
+	info "Bill 1 ID: " + vb_id;
+	info "Calling Create Vendor Bills function";
+	automation.CreateVendorBills(vps_id);
+	return;
+}
+fetch_po_api = invokeurl
+[
+	url :"https://www.zohoapis.com.au/crm/v8/Purchase_Orders/" + recid
+	type :GET
+	connection:"zohocrm"
+];
+poRec = fetch_po_api.get("data").get(0);
+info "Purchase order: " + poRec;
+dealRec = zoho.crm.getRecordById("Deals",poRec.get("Deal_Name").get("id"));
+dealOccasion = dealRec.get("Wedding");
+createVP = Map();
+// Basic Info
+createVP.put("Name",poRec.get("PO_Auto_Number"));
+createVP.put("Currency",poRec.get("Currency"));
+if(dealOccasion != null && dealOccasion != "")
+{
+	createVP.put("Occasion",dealOccasion.get("id"));
+}
+createVP.put("Exchange_Rate",poRec.get("Exchange_Rate"));
+createVP.put("Vendor_Email",poRec.get("Vendor_email"));
+createVP.put("Vendor_Number",poRec.get("Vendor_Name").get("name"));
+// Deal & PO Linking
+createVP.put("Deal_Name",poRec.get("Deal_Name").get("id"));
+createVP.put("Deal_Number",poRec.get("Deal_Number_for_PO"));
+createVP.put("PO_Number",poRec.get("Custom_PO_Number"));
+createVP.put("Purchase_Order",poRec.get("id"));
+createVP.put("VPS_Version",1);
+createVP.put("PO_Version",1);
+//  Vendor
+createVP.put("Vendor_Name",poRec.get("Vendor_Name").get("id"));
+vendorPaymentsList = List();
+Grand_Total = ifnull(poRec.get("Grand_Total"),0);
+totalTaxLC = ifnull(poRec.get("Total_Tax_Included"),0).toDecimal();
+info "Total Tax LC: " + totalTaxLC;
+totalMorTax = ifnull(poRec.get("AU_GST"),0);
+info "Total MoR Tax: " + totalMorTax;
+for each  lineItem in poRec.get("Purchase_Items")
+{
+	vpLine = Map();
+	vpLine.put("Product",lineItem.get("Product_Name").get("id"));
+	vpLine.put("Vendor_Cost_Com_LC_PO",lineItem.get("Vendor_Cost_Com_LC_1"));
+	vpLine.put("Com",lineItem.get("Vendor_Commission_1"));
+	vpLine.put("Commission",lineItem.get("Vendor_Commission"));
+	vpLine.put("Com_Type",lineItem.get("Commission_Type"));
+	vpLine.put("QTY",lineItem.get("QTY"));
+	vpLine.put("GST_Taxable",lineItem.get("GST_Taxable"));
+	vpLine.put("Vendor_GST_VAT_Tax_1",lineItem.get("Vendor_GST_VAT_Tax_1"));
+	vpLine.put("Vendor_Service_Tax_2",lineItem.get("Vendor_Service_Tax_2"));
+	vpLine.put("Markup1",lineItem.get("Markup"));
+	vpLine.put("Markup",lineItem.get("Q_Item_Markup_Base_Currency"));
+	vpLine.put("Quote_s_List_Price",lineItem.get("Quote_s_List_Price1"));
+	vpLine.put("Quote_s_Total",lineItem.get("Quote_s_Total1"));
+	// Dates on the product lines are unchanged from v1.
+	vpLine.put("Due_Date",poRec.get("Due_Date"));
+	vpLine.put("Bill_Issue_Date",poRec.get("Due_Date"));
+	vpLine.put("Bill_Due_Remainder_date",poRec.get("Due_Date"));
+	vendorPaymentsList.add(vpLine);
+}
+p1Percent = ifnull(poRec.get("Vendor_Payment_11"),0);
+p2Percent = ifnull(poRec.get("Vendor_Payment_21"),0);
+p3Percent = ifnull(poRec.get("Vendor_Payment_31"),0);
+p4Percent = ifnull(poRec.get("Vendor_Payment_41"),0);
+vendorPaymentVersions = List();
+// Map Due Dates & Amounts in SAME ORDER
+paymentConfigList = List();
+// ===================================================================
+// Payment 1. v2: the due date IS the PO field Vendor Payment 1 Date.
+// 	The v1 calculation, approved date plus due days, is the fallback
+// 	for a blank Vendor Payment 1 Date only. When the fallback is used,
+// 	p1FallbackNote is written to PO Approval Note further down.
+// ===================================================================
+p1 = Map();
+Vendor_Payment_1_Due_days = ifnull(poRec.get("Vendor_Payment_1_Due_Days1"),0);
+info "Vendor_Payment_1_Due_days: " + Vendor_Payment_1_Due_days;
+p1FallbackNote = "";
+if(poRec.get("Vendor_Payment_1_Date") != null && poRec.get("Vendor_Payment_1_Date") != "")
+{
+	p1.put("due_date",poRec.get("Vendor_Payment_1_Date"));
+	info "Payment 1 due date from Vendor Payment 1 Date: " + poRec.get("Vendor_Payment_1_Date");
+}
+else if(poRec.get("PO_Approved_Date") != null && poRec.get("PO_Approved_Date") != "")
+{
+	p1.put("due_date",poRec.get("PO_Approved_Date").addDay(Vendor_Payment_1_Due_days));
+	p1FallbackNote = "Vendor Payment 1 Date is blank. Payment 1 due date was calculated as PO Approved Date plus " + Vendor_Payment_1_Due_days + " days.";
+	info p1FallbackNote;
+}
+else
+{
+	p1.put("due_date",poRec.get("Created_Time").toDate().addDay(Vendor_Payment_1_Due_days));
+	p1FallbackNote = "Vendor Payment 1 Date and PO Approved Date are both blank. Payment 1 due date was calculated as PO Created Date plus " + Vendor_Payment_1_Due_days + " days.";
+	info p1FallbackNote;
+}
+p1.put("amount",poRec.get("Vendor_Payment_1"));
+p1.put("percent",p1Percent);
+info "P1 %: " + p1.get("percent");
+paymentConfigList.add(p1);
+// Payment 2. Unchanged. The due date is Vendor Payment 2 Date.
+p2 = Map();
+p2.put("due_date",poRec.get("Vendor_Payment_2_Date"));
+p2.put("amount",poRec.get("Vendor_Payment_2"));
+p2.put("percent",p2Percent);
+info "P2 %: " + p2.get("percent");
+paymentConfigList.add(p2);
+// Payment 3. Unchanged. The due date is Vendor Payment 3 Date.
+p3 = Map();
+p3.put("due_date",poRec.get("Vendor_Payment_3_Date"));
+p3.put("amount",poRec.get("Vendor_Payment_3"));
+p3.put("percent",p3Percent);
+info "P3 %: " + p3.get("percent");
+paymentConfigList.add(p3);
+// Payment 4. Unchanged. The due date is Vendor Payment 4 Date.
+p4 = Map();
+p4.put("due_date",poRec.get("Vendor_Payment_4_Date"));
+p4.put("amount",poRec.get("Vendor_Payment_4"));
+p4.put("percent",p4Percent);
+info "P4 %: " + p4.get("percent");
+paymentConfigList.add(p4);
+versionNo = 1;
+cumulativeScheduled = 0;
+info "Payment Config List:" + paymentConfigList;
+for each  paymentCfg in paymentConfigList
+{
+	dueDt = paymentCfg.get("due_date");
+	amount = paymentCfg.get("amount");
+	info "Amount: " + amount;
+	info "Due Date: " + dueDt;
+	percent = ifnull(paymentCfg.get("percent"),0).toDecimal();
+	info "Percentage: " + percent;
+	// Skip if either date or amount is missing / zero
+	if(dueDt != null && amount != null && amount > 0)
+	{
+		paymentVersion = Map();
+		poDueDate = dueDt.toDate();
+		// Date calculations
+		dueReminderDate = poDueDate.addDay(-7);
+		cumulativeScheduled = cumulativeScheduled + amount;
+		balanceDue = Grand_Total - cumulativeScheduled;
+		if(balanceDue < 0)
+		{
+			balanceDue = 0;
+		}
+		morTax = (totalMorTax * percent) / 100;
+		info "MoR Tax: " + morTax;
+		taxAmount = (totalTaxLC * percent) / 100;
+		info "Tax Amount:" + taxAmount;
+		// Incremental Name & Version
+		paymentVersion.put("Payment_Version",versionNo.toString());
+		paymentVersion.put("Payment_Name","Payment " + versionNo);
+		paymentVersion.put("Due_Date",poDueDate);
+		// ===========================================================
+		// v2. Bill issue date is due date minus 7 days, for EVERY payment.
+		// 	v1 issued Payment 1 on the PO Approved Date and Payments 2 to 4
+		// 	on due date minus 30. Grace's rule, 16/09/2026.
+		// ===========================================================
+		billIssueDate = poDueDate.addDay(-7);
+		paymentVersion.put("Bill_Issue_date",billIssueDate);
+		paymentVersion.put("Due_Reminder_Date",dueReminderDate);
+		paymentVersion.put("Scheduled_Amount_Vendor_Currency",amount);
+		paymentVersion.put("Balance_due",balanceDue);
+		paymentVersion.put("Status","Pending");
+		paymentVersion.put("Tax",taxAmount);
+		paymentVersion.put("Mor_Tax",morTax);
+		info "Payment " + versionNo + " | due " + poDueDate + " | issue " + billIssueDate + " | amount " + amount;
+		vendorPaymentVersions.add(paymentVersion);
+		versionNo = versionNo + 1;
+	}
+}
+createVP.put("Vendor_Payment_Version",vendorPaymentVersions);
+createVP.put("Product_Detail",vendorPaymentsList);
+createVP.put("Status","Draft");
+info "Create VPS Map: " + createVP;
+info "Vendor Payment Versions size: " + vendorPaymentVersions.size();
+res = zoho.crm.createRecord("Vendor_Payment_Schedules",createVP,{"trigger":{"workflow"}});
+info "VPS Create Response: " + res;
+if(res.get("id") != null)
+{
+	// Updating Vendor status of Service Booked Record
+	sbRecords = zoho.crm.getRelatedRecords("Service_Booked","Purchase_Orders",recid);
+	sbProductNames = List();
+	sbUpdateMap = Map();
+	if(sbRecords.size() > 0)
+	{
+		for each  sb in sbRecords
+		{
+			sbProductNames.add(sb.get("Product_Name").get("id"));
+			sbUpdateMap = Map();
+			sbUpdateMap.put("Supplier_Status","Supplier Bill Scheduled");
+			sbid = sb.get("id");
+			updateResp = zoho.crm.updateRecord("Services_Booked",sbid,sbUpdateMap);
+			info "SB Update:" + updateResp;
+		}
+	}
+	// Updating Vendor Status in PO Subform
+	poRec = zoho.crm.getRecordById("Purchase_Orders",recid);
+	vendorBookedSubform = poRec.get("Vendor_Booked_Services_Su");
+	updatePoMap = Map();
+	vbRowList = list();
+	for each  vb in vendorBookedSubform
+	{
+		vbRow = Map();
+		vbRow.put("id",vb.get("id"));
+		// REQUIRED to keep the row
+		productName = vb.get("Product_Name").get("id");
+		if(productName != null && sbProductNames.contains(productName))
+		{
+			vbRow.put("Vendor_Status","Supplier Bill Scheduled");
+		}
+		vbRowList.add(vbRow);
+	}
+	updatePoMap.put("Vendor_Booked_Services_Su",vbRowList);
+	// v2. The note is written when Payment 1 had to fall back, and says why.
+	if(p1FallbackNote != "")
+	{
+		updatePoMap.put("PO_Approval_Note",p1FallbackNote);
+	}
+	updatePoResp = zoho.crm.updateRecord("Purchase_Orders",recid,updatePoMap);
+	info "PO Update: " + updatePoResp;
+	info "Calling Create First Vendor Bill function";
+	vb_id = standalone.Create_1_VendorBill(res.get("id"));
+	info "Bill 1 ID: " + vb_id;
+	info "Calling Create Vendor Bills function";
+	automation.CreateVendorBills(res.get("id"));
+}
+}

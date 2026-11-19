@@ -1,0 +1,144 @@
+void automation.CreateVendorBills(Int VendorPS)
+{
+vpsRec = zoho.crm.getRecordById("Vendor_Payment_Schedules",VendorPS);
+info "VPS Record: " + vpsRec;
+// Fetch Vendor & Currency Tax
+FC_Tax_1 = null;
+FC_Tax_2 = null;
+vendor = vpsRec.get("Vendor_Name");
+if(vendor != null)
+{
+	fetchVendor = zoho.crm.getRecordById("Vendors",vendor.get("id"));
+	vendorBilling_Currency = fetchVendor.get("Billing_Currency");
+	if(vendorBilling_Currency != null)
+	{
+		currencyResp = zoho.crm.getRecordById("Currencies",vendorBilling_Currency.get("id"));
+		FC_Tax_1 = currencyResp.get("FC_Tax_1");
+		FC_Tax_2 = currencyResp.get("FC_Tax_2");
+	}
+}
+vpsLines = vpsRec.get("Vendor_Payment_Version");
+info "VPS: " + vpsLines;
+updatedVpsLines = List();
+version = 1;
+for each  line in vpsLines
+{
+	info "Bill: " + line;
+	updateLine = Map();
+	updateLine.put("id",line.get("id"));
+	// If Bill already exists → retain as-is
+	if(line.get("Bill") != null)
+	{
+		updateLine.put("Bill",line.get("Bill").get("id"));
+		updatedVpsLines.add(updateLine);
+		continue;
+	}
+	/* ---------------- Create Vendor Bill ---------------- */
+	version = version + 1;
+	vendorBillMap = Map();
+	productList = List();
+	// Vendor
+	if(vendor != null)
+	{
+		vendorBillMap.put("Vendor_Name",vendor.get("id"));
+		Vendor = zoho.crm.getRecordById("Vendors",vendor.get("id"));
+		info "Vendor Details:" + Vendor;
+		vendorBillMap.put("Vendor_Country",Vendor.get("Country"));
+	}
+	vendorBillMap.put("Vendor_Email",vpsRec.get("Vendor_Email"));
+	vendorBillMap.put("Vendor_Payment_Schedule",VendorPS);
+	vendorBillMap.put("Bill_Issue_Date",line.get("Bill_Issue_date"));
+	vendorBillMap.put("Bill_Due_Date",line.get("Due_Date"));
+	// Currency
+	vendorBillMap.put("Currency",vpsRec.get("Currency"));
+	vendorBillMap.put("Exchange_Rate",vpsRec.get("Exchange_Rate"));
+	// Deal
+	deal = vpsRec.get("Deal_Name");
+	if(deal != null)
+	{
+		vendorBillMap.put("Name",deal.get("name"));
+		vendorBillMap.put("Deal_Name",deal.get("id"));
+		vendorBillMap.put("Deal_Number",vpsRec.get("Deal_Number"));
+		fetch_deal = zoho.crm.getRecordById("Deals",deal.get("id"));
+		vendorBillMap.put("MoR",fetch_deal.get("MoR"));
+		vendorBillMap.put("EW_Number",fetch_deal.get("EW_Number"));
+	}
+	// Purchase Order
+	po = vpsRec.get("Purchase_Order");
+	if(po != null)
+	{
+		vendorBillMap.put("Purchased_Order",po.get("id"));
+		vendorBillMap.put("Custom_PO_Number",vpsRec.get("PO_Number"));
+		//vendorBillMap.put("EW_Number",po.get("EW_Number"));
+		poResponse = invokeurl
+		[
+			url :"https://www.zohoapis.com.au/crm/v8/Purchase_Orders/" + po.get("id")
+			type :GET
+			connection:"zohocrm"
+		];
+		info "Get PO Response :" + poResponse;
+		po_rec = poResponse.get("data").get(0);
+		//po_rec = zoho.crm.getRecordById("Purchase_Orders",po.get("id"));
+		info "PO Record: " + po_rec;
+		vendorBillMap.put("PO_Adjustment",ifnull(po_rec.get("Adjustment"),0));
+		vendorBillMap.put("Sum_of_Payable_amt",ifnull(po_rec.get("Sub_Total"),0));
+		vendorBillMap.put("Total_VendorTax_Included",ifnull(po_rec.get("Total_Tax_Included"),0));
+		vendorBillMap.put("AU_GST",ifnull(po_rec.get("AU_GST"),0));
+		vendorBillMap.put("Grand_Total_in_PO",ifnull(po_rec.get("Grand_Total"),0));
+		vendorBillMap.put("Adjustment",ifnull(po_rec.get("Adjustment"),0));
+		vendorBillMap.put("Invoice_Data",po_rec.get("Invoice_Data"));
+	}
+	// Bill Metadata
+	vendorBillMap.put("Payment_Status","Unpaid");
+	vendorBillMap.put("Bills_VPS_Custom_Number",vpsRec.get("VPS_Custom_Number"));
+	/* -------- Product Line -------- */
+	// 	search_prod_criteria = "(Name_Product_Name:equals:Vendor Payment " + version + ")";
+	search_prod_criteria = "(Name_Product_Name:equals:Vendor Bill " + version + ")";
+	fetch_product = zoho.crm.searchRecords("Products",search_prod_criteria);
+	if(fetch_product.size() > 0)
+	{
+		productMap = Map();
+		productMap.put("Product",fetch_product.get(0).get("id"));
+		productMap.put("Quantity",1);
+		productMap.put("Cost_Price_LC",line.get("Scheduled_Amount_Vendor_Currency"));
+		productMap.put("Amount_PO_LC",line.get("Scheduled_Amount_Vendor_Currency"));
+		productMap.put("Vendor_Cost_Com_LC_PO",line.get("Scheduled_Amount_Vendor_Currency"));
+		productMap.put("FC_Tax1",FC_Tax_1);
+		productMap.put("FC_Tax2",FC_Tax_2);
+		productMap.put("Bill_Issue_Date",line.get("Bill_Issue_date"));
+		productMap.put("Bill_Due_Date",line.get("Due_Reminder_Date"));
+		// Optional balance tracking
+		productMap.put("Balance_Amount",line.get("Balance_due"));
+		mor_tax = line.get("Mor_Tax");
+		productMap.put("MoR_Tax",mor_tax);
+		productList.add(productMap);
+	}
+	vendorBillMap.put("Product_Details",productList);
+	if(mor_tax == 0)
+	{
+		vendorBillMap.put("Tax_Type","GST Free");
+	}
+	else
+	{
+		vendorBillMap.put("Tax_Type","GST 10%");
+	}
+	//bill_no = vpsRec.get("PO_Number") + "- " + vpsRec.get("VPS_Custom_Number") + "- V" + vpsRec.get("VPS_Version") + "- P" + vpsRec.get("PO_Version");
+	bill_no = vpsRec.get("VPS_Custom_Number") + "- V" + vpsRec.get("VPS_Version") + "- P" + vpsRec.get("PO_Version");
+	//vendorBillMap.put("Name",bill_no);
+	vendorBillMap.put("Custom_Bill_Number",bill_no);
+	// Create Vendor Bill
+	response = zoho.crm.createRecord("Vendor_Bills",vendorBillMap);
+	info "Response: " + response;
+	if(response.get("id") != null)
+	{
+		updateLine.put("Bill",response.get("id"));
+	}
+	updatedVpsLines.add(updateLine);
+}
+/* ---------------- Update VPS Subform (ALL ROWS) ---------------- */
+updateVpsMap = Map();
+updateVpsMap.put("Status","Bill Issued");
+updateVpsMap.put("Vendor_Payment_Version",updatedVpsLines);
+updateResp = zoho.crm.updateRecord("Vendor_Payment_Schedules",VendorPS,updateVpsMap);
+info "Update Response: " + updateResp;
+}

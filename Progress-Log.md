@@ -19,7 +19,8 @@
 10. Images widget: confirm who manages the AWS account, whether S3 pictures are public or private, and whether to use the hybrid (lead image copied into Zoho for Canvas, full gallery by widget). See `images/s3-widget/README.md`.
 11. Products: the 51 Ferry Easy Wedding Crew Bali copies have Product Name in the "•" form, which the existing Product workflow will rewrite as "code . name" on the next edit. Decide which form is wanted. Also confirm the GST Free tax on the copies is right, and check Zoho Books for any items created.
 12. 8 Easy Wedding Crew Bali: 12 single products have no cost because the rate card does not cover them (1 videographer, 1-hour, 2 Hours - 2 Photographers, Content 1 to 3 hours). Ask the contractor, or retire them. Packages still carry Ferry's costs. No products exist yet for 4-hour, 12-hour or family photography rates.
-13. PO to Vendor Bills repair: code of `SyncBillToZohoBooks` and live `CreateVendorPaymentSchedule1` is now read and saved. Still needed from Setup: the Associations panels of both, the action on rule `93610000004176388`, and (optional) the code of `CreateVendorPay`, `CreateVendorBills`, `Create_1_VendorBill`, `Recreate_VPS`. Then Grace signs off the wiring map. See `purchase-orders/po-bill-repair/README.md`.
+13. PO to Vendor Bills repair: all six functions are read and saved. To close Phase 1, Grace to send the Associations panels of `CreateVendorPay` and `CreateVendorPaymentSchedule1`, then sign off the wiring map in `purchase-orders/po-bill-repair/README.md`.
+16. PO to Vendor Bills repair: check in Zoho Books whether a Bill 1 has been posted twice (example CRM bill `93610000022578179`). 26 bills already in Books have an issue date still to come and the sync rule will run on them again.
 15. PO to Vendor Bills repair: 57 bills are past their issue date with no Books id and no error message; 7 voided bills with a future issue date pass the sync rule's condition. Decide what to do once the sync function code is read.
 14. PO to Vendor Bills repair: choose one word for a void VPS ("Void" is the picklist option, "Voided" is what functions write) before v4 is saved.
 
@@ -32,6 +33,7 @@
 - 17:17, Grace, brief for repairing the PO to Vendor Bills workflow; Phase 1 (read-only) started.
 - 17:59, Grace, screenshot of the rule `SyncBillsToZohoBooks` and links to two functions.
 - 18:02, Grace, pasted the code of `SyncBillToZohoBooks` and `CreateVendorPaymentSchedule1`.
+- 18:10, Grace, pasted the code of `CreateVendorPay`, `CreateVendorBills`, `Create_1_VendorBill` and `Recreate_VPS`.
 
 **Done**
 - Read the memory index `MEMORY.md` (12 Nov 2026), `project-knowledge-maintenance.md`, and the five files added since the index: the PO bill repair brief for Claude Code, the PO to Vendor Bills framework, the `CreateVendorPaymentSchedule1` v4 draft code, the PO record lock note (all 19 Nov) and the Installment Calculator summary (17 Nov).
@@ -40,6 +42,7 @@
 - PO bill repair Phase 1, connector part, read-only: read field metadata for Purchase Orders, Vendor Bills, VPS and the VPS rows module, and all 919 POs, 730 VPS and 1,289 Vendor Bills. Findings and the partial wiring map are in `purchase-orders/po-bill-repair/README.md`; record ids in `phase1-anomalies-2026-11-19.json`. Nothing was written to Zoho.
 - Recorded the sync rule from Grace's screenshot and compared it with all 1,263 bills that have an issue date (read-only). Findings in the PO README.
 - Saved both live functions unchanged in `purchase-orders/po-bill-repair/live-code-2026-11-19/` and reviewed them. Defect lists and the updated wiring map are in the PO README. Read-only.
+- Saved and reviewed the other four live functions. The full chain, defect list and wiring map are in the PO README. Read-only.
 
 **Decisions**
 - The Drive memory folder stays the source of truth. This repo holds digests and file ids, not copies (Claude's reading of the note "snapshot not a mirror"; Grace to correct if she wants copies here).
@@ -53,6 +56,8 @@
 - The bill sync is a date rule: Bill Issue Date at 08:00, once, unless Status is Cancelled Deal. Claude Code cannot open Zoho Setup links; code must be pasted.
 - `SyncBillToZohoBooks` has no guard for a bill already in Books or a voided bill, and fails silently. Of the 57 unsynced bills past their issue date, 27 were skipped for MoR; 30 failed for unknown reasons.
 - Live `CreateVendorPaymentSchedule1` voids bills by the CRM payment cache, including bills already in Books, and joins the VPS version as text (source of "21", "111").
+- Bill 1 is synced to Books at creation by `Create_1_VendorBill` and again by the date rule on its issue date; the sync has no guard. Whether Books refuses the second post is not yet checked.
+- `Recreate_VPS` writes `Bill_Issue_Date` where the field is `Bill_Issue_date`, and still uses the pre-16/09 date rules.
 - Zoho Books, Zoho Analytics and Zoho Projects connectors are now listed for Claude sessions. Not tested.
 
 **Next**
