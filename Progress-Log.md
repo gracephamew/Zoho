@@ -19,7 +19,8 @@
 10. Images widget: confirm who manages the AWS account, whether S3 pictures are public or private, and whether to use the hybrid (lead image copied into Zoho for Canvas, full gallery by widget). See `images/s3-widget/README.md`.
 11. Products: the 51 Ferry Easy Wedding Crew Bali copies have Product Name in the "•" form, which the existing Product workflow will rewrite as "code . name" on the next edit. Decide which form is wanted. Also confirm the GST Free tax on the copies is right, and check Zoho Books for any items created.
 12. 8 Easy Wedding Crew Bali: 12 single products have no cost because the rate card does not cover them (1 videographer, 1-hour, 2 Hours - 2 Photographers, Content 1 to 3 hours). Ask the contractor, or retire them. Packages still carry Ferry's costs. No products exist yet for 4-hour, 12-hour or family photography rates.
-13. PO to Vendor Bills repair: Grace to approve Phase 1 (read-only wiring check). Claude Code then needs the Associations of "Create Vendor Payment- Parent" and the bodies of `SyncBillToZohoBooks` and `SyncBillsToZohoBooks` from Setup. See `purchase-orders/po-bill-repair/README.md`.
+13. PO to Vendor Bills repair: Phase 1 connector checks are done. To finish the wiring map, Grace to supply from Setup the Associations of "Create Vendor Payment- Parent", the code of `SyncBillToZohoBooks` and the criteria of the Vendor Bills rule `SyncBillsToZohoBooks`. Then Grace signs off the map. See `purchase-orders/po-bill-repair/README.md`.
+14. PO to Vendor Bills repair: choose one word for a void VPS ("Void" is the picklist option, "Voided" is what functions write) before v4 is saved.
 
 ---
 
@@ -27,11 +28,13 @@
 
 **Chats**
 - 17:14, Grace, update context from the Drive folder `_Claude_Project_Memory`.
+- 17:17, Grace, brief for repairing the PO to Vendor Bills workflow; Phase 1 (read-only) started.
 
 **Done**
 - Read the memory index `MEMORY.md` (12 Nov 2026), `project-knowledge-maintenance.md`, and the five files added since the index: the PO bill repair brief for Claude Code, the PO to Vendor Bills framework, the `CreateVendorPaymentSchedule1` v4 draft code, the PO record lock note (all 19 Nov) and the Installment Calculator summary (17 Nov).
 - Listed the folder: 103 files. The other 96 files were not opened; the index line for each was read.
 - Added `purchase-orders/po-bill-repair/README.md` (digest and Drive file ids) and a "Shared project memory" section to `CLAUDE.md`.
+- PO bill repair Phase 1, connector part, read-only: read field metadata for Purchase Orders, Vendor Bills, VPS and the VPS rows module, and all 919 POs, 730 VPS and 1,289 Vendor Bills. Findings and the partial wiring map are in `purchase-orders/po-bill-repair/README.md`; record ids in `phase1-anomalies-2026-11-19.json`. Nothing was written to Zoho.
 
 **Decisions**
 - The Drive memory folder stays the source of truth. This repo holds digests and file ids, not copies (Claude's reading of the note "snapshot not a mirror"; Grace to correct if she wants copies here).
@@ -39,10 +42,13 @@
 **Learned**
 - The tax change seen on 18 Nov when duplicating products (AU GST 10% to GST Free) is the known live workflow that rewrites Taxable and Tax on Product saves, recorded in the memory since September.
 - The connector can read picklist values through field metadata, so the PO Status picklist can be re-read without Setup. Rules, function bodies and Associations still need Setup.
+- PO Status has 14 values, including "Void", which the framework document does not list. 623 POs sit on "Vendor Bills Created in CRM"; 9 of them have no bill. 37 POs have bills under another Status. 21 POs carry more than one live VPS, 20 of them with bills already in Books.
+- Functions store values that are not picklist options: "Voided" on VPS Status (option is "Void") and "Unpaid" on the bills' Books Payment Status.
+- `Sync_Error_Message` is empty on every bill, and 4 bills say Sync to Books YES with no Books id.
 - Zoho Books, Zoho Analytics and Zoho Projects connectors are now listed for Claude sessions. Not tested.
 
 **Next**
-- Phase 1 of the PO bill repair, once Grace approves.
+- Grace supplies the three Setup items; Claude completes the wiring map for sign-off. No Phase 2 work before that.
 
 ---
 

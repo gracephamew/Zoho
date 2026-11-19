@@ -1,0 +1,797 @@
+{
+ "pos_with_more_than_one_live_vps": [
+  {
+   "po_id": "93610000005590051",
+   "po_status": "Resend Approved Summary to Finance",
+   "vps": [
+    {
+     "id": "93610000006137515",
+     "status": "Draft",
+     "version": "1"
+    },
+    {
+     "id": "93610000006144582",
+     "status": "Draft",
+     "version": "1"
+    }
+   ],
+   "bills": 0,
+   "bills_with_books_id": 0
+  },
+  {
+   "po_id": "93610000007873080",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000007827592",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000007848991",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000007856811",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000007958144",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000011318417",
+     "status": "Bill Issued",
+     "version": "2"
+    },
+    {
+     "id": "93610000011716235",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 3,
+   "bills_with_books_id": 3
+  },
+  {
+   "po_id": "93610000007858203",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000007843935",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000011319428",
+     "status": "Bill Issued",
+     "version": "2"
+    },
+    {
+     "id": "93610000012637161",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000012648098",
+     "status": "Draft",
+     "version": "21"
+    }
+   ],
+   "bills": 2,
+   "bills_with_books_id": 2
+  },
+  {
+   "po_id": "93610000007539124",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000007863694",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000007962363",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000007981008",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 2,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000007859289",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000007912360",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000010327221",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 3,
+   "bills_with_books_id": 2
+  },
+  {
+   "po_id": "93610000007854099",
+   "po_status": "Recreate Vendor Bills in CRM",
+   "vps": [
+    {
+     "id": "93610000007913889",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000011319434",
+     "status": "Bill Issued",
+     "version": "2"
+    },
+    {
+     "id": "93610000011321758",
+     "status": "Draft",
+     "version": "21"
+    }
+   ],
+   "bills": 2,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000007850198",
+   "po_status": "Recreate Vendor Bills in CRM",
+   "vps": [
+    {
+     "id": "93610000007954208",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000011327362",
+     "status": "Bill Issued",
+     "version": "2"
+    }
+   ],
+   "bills": 3,
+   "bills_with_books_id": 2
+  },
+  {
+   "po_id": "93610000007824134",
+   "po_status": "Recreate Vendor Bills in CRM",
+   "vps": [
+    {
+     "id": "93610000007966091",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000011300970",
+     "status": "Draft",
+     "version": "21"
+    },
+    {
+     "id": "93610000011318426",
+     "status": "Bill Issued",
+     "version": "2"
+    },
+    {
+     "id": "93610000011532175",
+     "status": "Draft",
+     "version": "211"
+    }
+   ],
+   "bills": 3,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000007852243",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000007970260",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000011317680",
+     "status": "Bill Issued",
+     "version": "2"
+    },
+    {
+     "id": "93610000015754692",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000017377447",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 3,
+   "bills_with_books_id": 3
+  },
+  {
+   "po_id": "93610000008898040",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000009193245",
+     "status": "Draft",
+     "version": "1"
+    },
+    {
+     "id": "93610000009202067",
+     "status": "Draft",
+     "version": "1"
+    },
+    {
+     "id": "93610000010204452",
+     "status": "Draft",
+     "version": "1"
+    },
+    {
+     "id": "93610000010214521",
+     "status": "Draft",
+     "version": "1"
+    },
+    {
+     "id": "93610000010217404",
+     "status": "Draft",
+     "version": "1"
+    },
+    {
+     "id": "93610000010225454",
+     "status": "Draft",
+     "version": "1"
+    },
+    {
+     "id": "93610000010230462",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 1,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000009712001",
+   "po_status": "Cancelled",
+   "vps": [
+    {
+     "id": "93610000009688787",
+     "status": "Draft",
+     "version": "1"
+    },
+    {
+     "id": "93610000011299742",
+     "status": "Draft",
+     "version": "111"
+    },
+    {
+     "id": "93610000011318660",
+     "status": "Draft",
+     "version": "11"
+    }
+   ],
+   "bills": 4,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000009716471",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000010002700",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000010125769",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 2,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000009682409",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000010019217",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000010097907",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 3,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000011310061",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000011820157",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000012645201",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 3,
+   "bills_with_books_id": 3
+  },
+  {
+   "po_id": "93610000012620012",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000012617162",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000012648153",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 5,
+   "bills_with_books_id": 2
+  },
+  {
+   "po_id": "93610000013244286",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000013439024",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000014179335",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 2,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000014543013",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000015536088",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000015699197",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 4,
+   "bills_with_books_id": 2
+  },
+  {
+   "po_id": "93610000014684058",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000015539242",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000015757126",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 4,
+   "bills_with_books_id": 2
+  },
+  {
+   "po_id": "93610000014552042",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000015567110",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000015763115",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 4,
+   "bills_with_books_id": 2
+  },
+  {
+   "po_id": "93610000016713049",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000016738016",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000017883035",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 2,
+   "bills_with_books_id": 1
+  },
+  {
+   "po_id": "93610000018291369",
+   "po_status": "Vendor Bills Created in CRM",
+   "vps": [
+    {
+     "id": "93610000018686302",
+     "status": "Bill Issued",
+     "version": "1"
+    },
+    {
+     "id": "93610000018777427",
+     "status": "Bill Issued",
+     "version": "1"
+    }
+   ],
+   "bills": 2,
+   "bills_with_books_id": 1
+  }
+ ],
+ "pos_status_bills_created_but_no_bills": [
+  "93610000005706019",
+  "93610000005717029",
+  "93610000005823005",
+  "93610000014083046",
+  "93610000017359010",
+  "93610000019408188",
+  "93610000019606033",
+  "93610000022636006",
+  "93610000027550110"
+ ],
+ "pos_with_bills_but_status_not_created": [
+  {
+   "po_id": "93610000005042005",
+   "po_status": "PO & Quote Approved",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000005388092",
+   "po_status": "PO & Quote Approved",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000006243040",
+   "po_status": "PO & Quote Approved",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000006249014",
+   "po_status": "PO & Quote Approved",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000007193001",
+   "po_status": "PO & Quote Approved",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000007824134",
+   "po_status": "Recreate Vendor Bills in CRM",
+   "bills": 3
+  },
+  {
+   "po_id": "93610000007850198",
+   "po_status": "Recreate Vendor Bills in CRM",
+   "bills": 3
+  },
+  {
+   "po_id": "93610000007854099",
+   "po_status": "Recreate Vendor Bills in CRM",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000009712001",
+   "po_status": "Cancelled",
+   "bills": 4
+  },
+  {
+   "po_id": "93610000011999118",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000012622088",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000013508004",
+   "po_status": "Cancelled",
+   "bills": 3
+  },
+  {
+   "po_id": "93610000014158032",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000014693331",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000015691304",
+   "po_status": "PO & Quote Approved",
+   "bills": 1
+  },
+  {
+   "po_id": "93610000016219295",
+   "po_status": "Approved",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000018298192",
+   "po_status": "Resend Approved Summary to Finance",
+   "bills": 1
+  },
+  {
+   "po_id": "93610000019381234",
+   "po_status": "Approved",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000019824689",
+   "po_status": "Void",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000020175588",
+   "po_status": "Cancelled",
+   "bills": 1
+  },
+  {
+   "po_id": "93610000020176159",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000021041162",
+   "po_status": "Void",
+   "bills": 1
+  },
+  {
+   "po_id": "93610000021179025",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000021764048",
+   "po_status": "Cancelled",
+   "bills": 1
+  },
+  {
+   "po_id": "93610000021798031",
+   "po_status": "Cancelled",
+   "bills": 1
+  },
+  {
+   "po_id": "93610000021798042",
+   "po_status": "Cancelled",
+   "bills": 1
+  },
+  {
+   "po_id": "93610000022254001",
+   "po_status": "PO & Quote Approved",
+   "bills": 1
+  },
+  {
+   "po_id": "93610000022635481",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000022643002",
+   "po_status": null,
+   "bills": 2
+  },
+  {
+   "po_id": "93610000024380252",
+   "po_status": "PO & Quote Approved",
+   "bills": 3
+  },
+  {
+   "po_id": "93610000025144121",
+   "po_status": "Created",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000025601214",
+   "po_status": "Void",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000025605365",
+   "po_status": "Void",
+   "bills": 3
+  },
+  {
+   "po_id": "93610000026874146",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000027066026",
+   "po_status": null,
+   "bills": 2
+  },
+  {
+   "po_id": "93610000028300141",
+   "po_status": "Cancelled",
+   "bills": 2
+  },
+  {
+   "po_id": "93610000028305888",
+   "po_status": "Cancelled",
+   "bills": 2
+  }
+ ],
+ "bills_with_no_vps": [
+  "93610000004826197",
+  "93610000004827203",
+  "93610000004827262",
+  "93610000004827303",
+  "93610000004827314",
+  "93610000004827411",
+  "93610000004829059",
+  "93610000004829228",
+  "93610000004830103",
+  "93610000004830188",
+  "93610000004830197",
+  "93610000004831169",
+  "93610000004831184",
+  "93610000004833786",
+  "93610000004835445",
+  "93610000004836811",
+  "93610000004837067",
+  "93610000004837318",
+  "93610000004844099",
+  "93610000004845139",
+  "93610000004845238",
+  "93610000004845324",
+  "93610000004846139",
+  "93610000004849328",
+  "93610000004850106",
+  "93610000004852550",
+  "93610000004853142",
+  "93610000004952362",
+  "93610000005229045",
+  "93610000005236161",
+  "93610000005249067",
+  "93610000011298496",
+  "93610000011319765",
+  "93610000011324545",
+  "93610000011324550",
+  "93610000011330519",
+  "93610000011405362",
+  "93610000011407143",
+  "93610000011408021",
+  "93610000011408025",
+  "93610000011479008",
+  "93610000022759317"
+ ],
+ "bills_with_no_po": [
+  "93610000004365112",
+  "93610000004378153",
+  "93610000004383134",
+  "93610000004401140",
+  "93610000004410066",
+  "93610000004533051",
+  "93610000004533060",
+  "93610000004539056",
+  "93610000004650390",
+  "93610000004826197",
+  "93610000004827203",
+  "93610000004827262",
+  "93610000004827303",
+  "93610000004827314",
+  "93610000004827411",
+  "93610000004829059",
+  "93610000004829228",
+  "93610000004830103",
+  "93610000004830188",
+  "93610000004830197",
+  "93610000004831169",
+  "93610000004831184",
+  "93610000004833786",
+  "93610000004835445",
+  "93610000004836811",
+  "93610000004837067",
+  "93610000004837318",
+  "93610000004844099",
+  "93610000004845139",
+  "93610000004845238",
+  "93610000004845324",
+  "93610000004846139",
+  "93610000004849328",
+  "93610000004850106",
+  "93610000004852550",
+  "93610000004853142",
+  "93610000004952362",
+  "93610000005229045",
+  "93610000005236161",
+  "93610000005241657",
+  "93610000005242967",
+  "93610000005245429",
+  "93610000005249067",
+  "93610000005365026",
+  "93610000006877587",
+  "93610000006893965",
+  "93610000006895674",
+  "93610000006903652",
+  "93610000011298496",
+  "93610000011319765",
+  "93610000011324545",
+  "93610000011324550",
+  "93610000011330519",
+  "93610000011405362",
+  "93610000011407143",
+  "93610000011408021",
+  "93610000011408025",
+  "93610000011479008",
+  "93610000013029405",
+  "93610000013030082",
+  "93610000013036030",
+  "93610000013605296",
+  "93610000013621268",
+  "93610000014623037",
+  "93610000014655014",
+  "93610000019739676",
+  "93610000019751311",
+  "93610000019756086",
+  "93610000019759024",
+  "93610000026459060",
+  "93610000026462027"
+ ],
+ "vps_status_none": [
+  "93610000004380121",
+  "93610000004400121",
+  "93610000004668412"
+ ],
+ "vps_status_voided": [
+  "93610000004380094",
+  "93610000004646623",
+  "93610000004690403"
+ ]
+}

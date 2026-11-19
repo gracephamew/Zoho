@@ -2,7 +2,7 @@
 
 Context loaded 19 November 2026 from the shared project memory on Drive. Nothing has been changed in Zoho for this work.
 
-Status: waiting for Grace to approve Phase 1 (read-only wiring check).
+Status: Phase 1 connector checks done 19/11/2026 (read-only, see "Phase 1 findings" below). The wiring map is not complete: three items must come from Setup (Grace).
 
 ## Source documents (Drive, `_Claude_Project_Memory`, written 19/11/2026 by the Cowork project)
 
@@ -64,3 +64,71 @@ Stop Purchase Orders from stacking duplicate Vendor Bills. One guarded path crea
 - PO-1211 by hand: VPS898 Payment 3 amount and date, B1493 issue date, the `Grand_Total_in_PO` and `Sum_of_Payable_amt` caches.
 - Unverified: whether the record lock blocks API writes by a user who is not exempt.
 - Unverified: which function ran on 07/10/2026 20:11 (user Support A N).
+
+## Phase 1 findings from the connector (19/11/2026 17:18 to 17:21, read-only)
+
+Method: field metadata (`getFields`) for Purchase_Orders, Vendor_Bills, Vendor_Payment_Schedules and Vendor_Payment_Version; COQL over all 919 POs, 730 VPS and 1,289 Vendor Bills. No record, field, rule or function was written. Lists of record ids are in `phase1-anomalies-2026-11-19.json`.
+
+### PO Status picklist (Fact, 14 values; shown as display => stored where they differ)
+
+Created; PO & Quote Approved => Approved; Sent to Vendor for Signoff => Delivered; Cancelled; Updated; PO Approved. Pending Quote Approval => Pending Couple Approval; Invoice Attached; Resend Approved Summary to Finance => Sent Approved Summary to Finance; Vendor Bills Created in CRM; Recreate Vendor Bills in CRM => Test VPS Creation; Automated Approval WO Bill; PO & Quote Approved Paid via Qwilr; Void; Vendor Bills Manually Updated.
+
+- Fact: "Void" is in the live picklist and is not in the framework document.
+- Fact: several display values differ from the stored value. A rule or function that tests the Status must use the form that the function actually receives. Unverified which form Deluge returns for these.
+
+### PO Status against VPS and bills (Fact)
+
+| PO Status | POs | With bills | With VPS, no bills | Neither |
+|---|---|---|---|---|
+| Vendor Bills Created in CRM | 623 | 614 | 9 | 0 |
+| PO & Quote Approved | 120 | 8 | 0 | 112 |
+| Created | 81 | 1 | 0 | 80 |
+| Cancelled | 25 | 16 | 0 | 9 |
+| Automated Approval WO Bill | 18 | 0 | 0 | 18 |
+| PO Approved. Pending Quote Approval | 17 | 0 | 0 | 17 |
+| Sent to Vendor for Signoff | 9 | 0 | 0 | 9 |
+| Void | 8 | 4 | 1 | 3 |
+| "Approved" (returned separately from PO & Quote Approved) | 5 | 2 | 0 | 3 |
+| Recreate Vendor Bills in CRM | 3 | 3 | 0 | 0 |
+| Resend Approved Summary to Finance | 2 | 1 | 1 | 0 |
+| Invoice Attached | 1 | 0 | 0 | 1 |
+| Vendor Bills Manually Updated | 0 | | | |
+| (no Status) | 7 | 2 | 0 | 5 |
+
+- Fact: 9 POs say "Vendor Bills Created in CRM" but have a VPS and no bill.
+- Fact: 37 POs have bills while their Status is something else (16 Cancelled, 8 PO & Quote Approved, 4 Void and others). Constraint 4 applies to these: setting "Vendor Bills Created in CRM" on them would build a second lot.
+
+### VPS (Fact)
+
+- 730 VPS. Stored Status: Bill Issued 691, Draft 32, Voided 3, empty 3, Approved- Issue Bill 1.
+- The Status picklist options are -None-, Planned, Draft, Void, Approved- Issue Bill (stored "Approved"), Bill Issued, Paid, Cancelled Deal, Adjusted, Ready for Bill. "Voided" is not an option, yet 3 records hold it, so a function wrote it. The v4 draft also writes and filters "Voided". It works as stored text but will not match a picklist filter on "Void". Decide on one word before v4 is saved.
+- 21 POs carry more than one VPS that is not Voided (the brief's audit said 26 with more than one VPS). 20 of the 21 have at least one bill synced to Books. By PO Status: 16 Vendor Bills Created in CRM, 3 Recreate Vendor Bills in CRM, 1 Resend Approved Summary to Finance, 1 Cancelled.
+- 30 VPS have no Purchase Order lookup.
+- VPS_Version values: "1" 714, "2" 10, "21" 3, and one each of "11", "111", "211". View: the odd values look like text joined instead of a number increased.
+- Subform module `Vendor_Payment_Version` (id `93610000004295366`): `Bill` (lookup to Vendor_Bills), `Payment_Version` (text, label "Payment N0"), `Payment_Name`, `Scheduled_Amount_Vendor_Currency`, `Balance_due`, `Due_Date`, `Due_Reminder_Date`, `Bill_Issue_date`, `Paid_Date`, `Status` (text), `Status_Last_Updated`, `Bills_VPS_Custom_Number` (label "Bill Name"), `Tax`, `Mor_Tax`, `Parent_Id`.
+
+### Vendor Bills (Fact)
+
+- 1,289 bills. 717 have a `Zoho_Books_Bill_Id`. `Sync_to_books`: YES 720, empty 568, NO 1.
+- 4 bills say YES with no Books id; 1 has a Books id without YES. This supports the rule that only `Zoho_Books_Bill_Id` is trusted.
+- `Sync_Error_Message` is empty on all 1,289 bills, so nothing writes a failure signal today (Phase 5).
+- `Payment_Status` stored: Unpaid 694, Paid 586, Voided 5, empty 3, Open 1. "Unpaid" is not a picklist option (options: -None-, Draft, Issued, Partially Paid, Paid, Voided, Credited, Open, Overdue, Bill Not Found, Approved).
+- 5 bills read Paid with no Books id, and 133 read Unpaid with a Books id. These are CRM cache values; money questions go to Zoho Books.
+- `Status` on bills is empty on 1,244; Voided 21, Paid 16, Approved- Sync to Books 7, Cancelled Deal 1.
+- 42 bills have no VPS lookup (audit said 47); 1 of them has a Books id. 71 bills have no PO lookup.
+
+### Wiring map so far
+
+| Link | State |
+|---|---|
+| PO Status "Vendor Bills Created in CRM" starts rule `93610000004176388` | Fact per source documents. Not readable by the connector. |
+| Which function that rule calls (`CreateVendorPay` or `CreateVendorPaymentSchedule1`) | Unverified. Needs the Associations of "Create Vendor Payment- Parent" from Setup. |
+| Fields the functions read and write on PO, VPS, VPS rows and bills | Fact: every API name used in the v4 draft exists in the live org. |
+| Bill to Books sync (`SyncBillToZohoBooks`, rule `SyncBillsToZohoBooks`) | Unverified. Code and rule criteria needed from Setup. |
+| Failure signal | Fact: none written today. |
+
+### Needed from Grace (Setup) to finish Phase 1
+
+1. Setup, Functions, "Create Vendor Payment- Parent": the Associations panel (which rules, buttons or schedules call it) and the first line of its code.
+2. The full code of `SyncBillToZohoBooks`.
+3. Setup, Workflow Rules, Vendor Bills, `SyncBillsToZohoBooks`: when it runs, its criteria and its action.

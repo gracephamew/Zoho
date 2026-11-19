@@ -19,7 +19,7 @@ The Zoho to Asana automations (Crew Package to Asana, Alec's Social Content) are
 | Images: widget to show S3 pictures on Vendor and Product pages | `images/s3-widget/` | Outline written 18 Nov 2026. Not started. |
 | Products: RC Bali - IDR duplicated to Ferry Easy Wedding Crew Bali - IDR | `products/duplicate-rc-bali-to-ferry-crew-bali/` | Done 18 Nov 2026. 51 copies, Inactive. |
 | Products: Ferry Easy Wedding Crew Bali duplicated to 8 Easy Wedding Crew Bali - IDR, with rate card costs | `products/duplicate-ferry-crew-bali-to-8-ew-crew-bali/` | Done 18 Nov 2026. 51 copies, Inactive. 12 singles have no cost. |
-| Purchase Orders: repair the PO to Vendor Bills workflow | `purchase-orders/po-bill-repair/` | Context loaded 19 Nov 2026. Waiting for Grace to approve Phase 1 (read-only). No changes made. |
+| Purchase Orders: repair the PO to Vendor Bills workflow | `purchase-orders/po-bill-repair/` | Phase 1 connector checks done 19 Nov 2026 (read-only). Waiting on three items from Setup to finish the wiring map. No changes made. |
 
 ## 2. Where things are
 
