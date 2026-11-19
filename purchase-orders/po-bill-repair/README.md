@@ -132,3 +132,18 @@ Created; PO & Quote Approved => Approved; Sent to Vendor for Signoff => Delivere
 1. Setup, Functions, "Create Vendor Payment- Parent": the Associations panel (which rules, buttons or schedules call it) and the first line of its code.
 2. The full code of `SyncBillToZohoBooks`.
 3. Setup, Workflow Rules, Vendor Bills, `SyncBillsToZohoBooks`: when it runs, its criteria and its action.
+
+## Bill to Books sync rule, from Grace's screenshot (19/11/2026 17:59)
+
+- Fact: rule `SyncBillsToZohoBooks`, id `93610000004897404`, module Vendor Bills. It runs on Bill Issue Date at 08:00 AM, Recur Once. Condition: Status isn't "Cancelled Deal". Instant action: function `SyncBillToZohoBooks`. No scheduled actions.
+- Fact: Grace also sent two function links, ids `93610000004305171` and `93610000004897390`. Claude Code cannot open Setup pages, so their names and code are still unread.
+- View: `93610000004897390` is `SyncBillToZohoBooks`, because its id sits next to the rule's id. `93610000004305171` would then be "Create Vendor Payment- Parent". Unverified.
+
+What the bill data shows against this rule (read-only COQL, 1,263 bills with a Bill Issue Date; ids in `phase1-bills-issue-date-passed-not-in-books-2026-11-19.json`):
+
+- Fact: 692 bills have an issue date that has passed and a Books id. 57 have an issue date that has passed and no Books id. `Sync_Error_Message` is empty on all 57.
+- Fact: of the 57, 15 were created after their own issue date. View: a date rule cannot fire for a date already past, so these were never going to sync by this rule.
+- Fact: the other 42 existed before their issue date and still have no Books id; 28 of them have a March 2026 issue date. Unverified why (failed sync, or the rule was created after those dates).
+- Fact: 26 bills with a future issue date are already in Books, so a second path syncs bills before the rule runs (the source documents name `Create_1_VendorBill`).
+- Fact: the rule's condition excludes only "Cancelled Deal". 7 bills with Status "Voided", a future issue date and no Books id pass the condition. Unverified whether the function skips voided bills or bills that already have a Books id; that needs the code.
+- Fact: 14 voided bills carry a Books id. For their state in Books, ask Zoho Books.
