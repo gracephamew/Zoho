@@ -147,3 +147,57 @@ What the bill data shows against this rule (read-only COQL, 1,263 bills with a B
 - Fact: 26 bills with a future issue date are already in Books, so a second path syncs bills before the rule runs (the source documents name `Create_1_VendorBill`).
 - Fact: the rule's condition excludes only "Cancelled Deal". 7 bills with Status "Voided", a future issue date and no Books id pass the condition. Unverified whether the function skips voided bills or bills that already have a Books id; that needs the code.
 - Fact: 14 voided bills carry a Books id. For their state in Books, ask Zoho Books.
+
+## Live code read 19/11/2026 18:10 (pasted by Grace, kept unchanged in `live-code-2026-11-19/`)
+
+Two functions: `SyncBillToZohoBooks.dg` (argument `recid`) and `CreateVendorPaymentSchedule1.dg` (argument `poId`). Which Setup link belongs to which, and the Associations of each, are still Unverified. The code of `CreateVendorPay` ("Create Vendor Payment- Parent"), `CreateVendorBills`, `Create_1_VendorBill` and `Recreate_VPS` has not been seen by Claude Code.
+
+### `SyncBillToZohoBooks` (Fact unless marked)
+
+What it does: reads the bill, stops unless MoR is "Easy Weddings Travel Pty Ltd", finds the vendor in Books by CRM vendor id, finds each product in Books by SKU text search, posts a bill to Books org `7005347798`, approves it, then writes `Sync_to_books` = "Yes" and `Zoho_Books_Bill_Id` on the CRM bill.
+
+Write set: Books: one new bill, then approve. CRM: `Vendor_Bills.Sync_to_books`, `Vendor_Bills.Zoho_Books_Bill_Id`.
+
+Defects:
+
+1. No check for an existing `Zoho_Books_Bill_Id`. A second run posts the bill again. Unverified whether Books rejects a repeated bill number for the same vendor.
+2. No check for a voided bill. Neither `Status` nor `Payment_Status` is tested here, and the rule tests only Status "Cancelled Deal".
+3. Every failure is silent. Wrong or empty MoR, vendor not in Books, Books error on create: nothing is written to the bill. `Sync_Error_Message` is never written.
+4. Vendor search: if Books answers code 0 with no contacts, `.get(0)` fails and the function stops.
+5. A product not found in Books is dropped from the bill without notice, so the Books bill can be smaller than the CRM bill. The search is a text search on SKU and takes the first hit, which may be a different item.
+6. The approve call's answer is not checked.
+7. The CRM update has no trigger option, so Vendor Bills edit workflows can fire from it.
+8. The Vendor record is re-read inside the product loop (one extra call per line). Two connections are used: "zohobooks" for reads, "books" for writes.
+
+Data check against defect 3 (57 bills past their issue date with no Books id): 25 have no MoR and 2 have MoR "Easy Weddings Limited", so the function skipped them by design and left no note. The other 30 have the right MoR and still did not sync (24 of them with March 2026 issue dates). Unverified why; the function logs are the only record.
+
+### `CreateVendorPaymentSchedule1`, live version (Fact unless marked)
+
+What it does: if the PO has no VPS, calls `CreateVendorPay(poId)` and stops. Otherwise it keeps bills whose `Payment_Status` is "Paid", sets `Payment_Status` = "Voided" on every other bill, sets `Status` = "Voided" on every existing VPS, calls `Recreate_VPS(poId, remainingAmount, nextVersion, paidCount)`, then points the paid bills at a VPS.
+
+Write set: `Vendor_Bills.Payment_Status`, `Vendor_Bills.Vendor_Payment_Schedule`, `Vendor_Payment_Schedules.Status`, plus whatever `CreateVendorPay` and `Recreate_VPS` write.
+
+Defects:
+
+1. It voids by `Payment_Status`, the CRM cache. A bill that is in Books but not shown as Paid in CRM is marked Voided in CRM, and nothing is sent to Books. This breaks the rule that a synced bill is never touched (133 bills are Unpaid in CRM with a Books id).
+2. It decides "paid" from the same cache, so a bill paid in Books but stale in CRM is voided and its amount is scheduled again.
+3. It voids `Payment_Status`, not the bill's `Status`. The sync rule and function look at neither, so a bill voided here still goes to Books on its issue date.
+4. Version bug: `nextVersion = 1` sits inside the loop, so only the last VPS counts, and `VPS_Version` is text, so `"2" + 1` gives "21". This explains the stored values "21", "11", "111", "211". (View on the mechanism; the values are Fact.)
+5. "Pick latest created VPS" takes the first search result. The search order is not stated, so paid bills can be attached to an old, voided VPS.
+6. It writes "Voided" to VPS Status, which is not a picklist option.
+7. After it runs, the new VPS has no bills (per the source documents, `Recreate_VPS` builds none). Whatever creates bills next is outside this function.
+8. No trigger option on any update, and no guard against running twice.
+
+### Wiring map, updated
+
+| Link | State |
+|---|---|
+| PO Status "Vendor Bills Created in CRM" starts rule `93610000004176388` | Fact per source documents |
+| Function on that rule | Unverified. Needs the rule's action or the functions' Associations. |
+| `CreateVendorPaymentSchedule1(poId)` calls `CreateVendorPay(poId)` when the PO has no VPS, else voids and calls `Recreate_VPS` | Fact (code) |
+| What calls `CreateVendorPaymentSchedule1` | Unverified |
+| Bill reaches Books by rule `93610000004897404` on Bill Issue Date 08:00, function `SyncBillToZohoBooks(recid)` | Fact (screenshot and code) |
+| Second, earlier path to Books | Fact from data (26 future-dated bills already in Books). Source documents name `Create_1_VendorBill`. Code unseen. |
+| Failure signal | Fact: none |
+
+Still needed to close Phase 1: the Associations panels of the two linked functions; the action shown on the rule "Create Vendor Payment Schedule" (`93610000004176388`); the code of `CreateVendorPay`, `CreateVendorBills`, `Create_1_VendorBill` and `Recreate_VPS` if Grace wants them in the map rather than taken from the source documents.

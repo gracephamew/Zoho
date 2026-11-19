@@ -1,0 +1,170 @@
+void automation.SyncBillToZohoBooks(Int recid)
+{
+line_items_list = list();
+// booksBills = zoho.books.getRecordsByID("Bills",7005347798,200716000000649147,"books");
+// info booksBills;
+VendorBills = zoho.crm.getRecordById("Vendor_Bills",recid);
+info VendorBills;
+VendorName = VendorBills.get("Vendor_Name");
+MoR = VendorBills.get("MoR");
+if(MoR == null || MoR.get("name") != "Easy Weddings Travel Pty Ltd")
+{
+	info "MoR is not matching";
+}
+if(VendorName != null && MoR != null && MoR.get("name") == "Easy Weddings Travel Pty Ltd")
+{
+	vendorID = VendorName.get("id");
+	info "vendorID : " + vendorID;
+	//Search vendor in Zoho Books
+	Vendor_url = "https://www.zohoapis.com.au/books/v3/contacts?organization_id=7005347798" + "&zcrm_vendor_id=" + vendorID;
+	// // ===== API CALL =====
+	Search_Vendor_b = invokeurl
+	[
+		url :Vendor_url
+		type :GET
+		connection:"zohobooks"
+	];
+	info "Search vendor in books - Response :-";
+	info Search_Vendor_b;
+	if(Search_Vendor_b.get("code") == 0)
+	{
+		B_Vendor = Search_Vendor_b.get("contacts").get(0);
+		B_VendorID = B_Vendor.get("contact_id");
+		info B_VendorID;
+		Product_Details = VendorBills.get("Product_Details");
+		info Product_Details;
+		totalTaxLC = 0;
+		for each  eachproduct in Product_Details
+		{
+			ProductId = eachproduct.get("Product").get("id");
+			Get_product = zoho.crm.getRecordById("Products",ProductId);
+			info Get_product;
+			product_SKU = Get_product.get("SKU");
+			info product_SKU;
+			totalTaxLC = totalTaxLC + ifnull(eachproduct.get("Tax_Inc_LC"),0);
+			product_url = "https://www.zohoapis.com.au/books/v3/items?organization_id=7005347798" + "&search_text=" + product_SKU;
+			// // ===== API CALL =====
+			Search_product_b = invokeurl
+			[
+				url :product_url
+				type :GET
+				connection:"zohobooks"
+			];
+			info "Zoho books product :";
+			info Search_product_b;
+			if(Search_product_b.get("code") == 0 && Search_product_b.get("items").size() > 0)
+			{
+				B_item = Search_product_b.get("items").get(0);
+				B_itemID = B_item.get("item_id");
+				info B_itemID;
+				item_map = Map();
+				item_map.put("item_id",B_itemID);
+				// Map this from CRM Product to Books Item ID
+				item_map.put("name",eachproduct.get("Product").get("name"));
+				//item_map.put("rate",eachproduct.get("Cost_Price_LC"));
+				item_map.put("rate",eachproduct.get("Amount_PO_LC"));
+				item_map.put("quantity",eachproduct.get("Quantity"));
+				//	item_map.put("discount",eachproduct.get("Discount"));
+				v_id = VendorBills.get("Vendor_Name").get("id");
+				info "CRM Vendor Id: " + v_id;
+				Vendor = zoho.crm.getRecordById("Vendors",v_id);
+				info "Vendor Details:" + Vendor;
+				tax_id = "";
+				serviceCountry = Vendor.get("Country");
+				if(serviceCountry != null && serviceCountry.toLowerCase().contains("australia"))
+				{
+					tax_id = "200716000000071050";
+				}
+				else
+				{
+					tax_id = "200716000000229016";
+					// GST Free
+				}
+				item_map.put("tax_id",tax_id);
+				// Example GST Free
+				line_items_list.add(item_map);
+			}
+		}
+		info "line_items_list data" + line_items_list;
+		// map to post
+		bill = Map();
+		billNo = VendorBills.get("Bill_Auto_number");
+		bill.put("bill_number",billNo);
+		// "001"
+		bill.put("date",VendorBills.get("Bill_Issue_Date"));
+		bill.put("due_date",VendorBills.get("Bill_Due_Date"));
+		bill.put("currency_code",VendorBills.get("Currency"));
+		// AUD
+		bill.put("exchange_rate",VendorBills.get("Exchange_Rate"));
+		bill.put("reference_number",VendorBills.get("Custom_PO_Number"));
+		bill.put("status",VendorBills.get("$state"));
+		// if needed
+		bill.put("vendor_id",B_VendorID);
+		custom_fields_list = List();
+		data_map = Map();
+		data_map.put("api_name","cf_crm_vendor_bill_id");
+		data_map.put("value",recid.toString());
+		custom_fields_list.add(data_map);
+		if(VendorBills.get("Deal_Name") != null)
+		{
+			deal_map = Map();
+			deal_map.put("api_name","cf_deal_name");
+			deal_map.put("value",VendorBills.get("Deal_Name").get("name"));
+			custom_fields_list.add(deal_map);
+			//info deal;
+		}
+		// ===== EW Number =====
+		if(VendorBills.get("EW_Number") != null)
+		{
+			ew_map = Map();
+			ew_map.put("customfield_id","200716000001105450");
+			// <-- YOUR EW FIELD ID
+			ew_map.put("value",VendorBills.get("EW_Number").toString());
+			custom_fields_list.add(ew_map);
+		}
+		cf1 = Map();
+		cf1.put("field_id",200716000000649001);
+		cf1.put("api_name","cf_tax_inc");
+		cf1.put("value",totalTaxLC);
+		custom_fields_list.add(cf1);
+		if(VendorBills.get("Invoice_Data") != null && VendorBills.get("Invoice_Data") != "")
+		{
+			cf2 = Map();
+			cf2.put("field_id",200716000003545322);
+			cf2.put("api_name","cf_invoice_number");
+			cf2.put("value",VendorBills.get("Invoice_Data"));
+			custom_fields_list.add(cf2);
+		}
+		bill.put("custom_fields",custom_fields_list);
+		line_items = list();
+		bill.put("line_items",line_items_list);
+		bill.put("is_inclusive_tax",true);
+		create_bill = invokeurl
+		[
+			url :"https://www.zohoapis.com.au/books/v3/bills?organization_id=7005347798"
+			type :POST
+			parameters:bill.tostring()
+			connection:"books"
+		];
+		info "create_bill response :" + create_bill;
+		if(create_bill.get("code") == 0)
+		{
+			bill_id = create_bill.get("bill").get("bill_id");
+			info bill_id;
+			approve_bill = invokeurl
+			[
+				url :"https://www.zohoapis.com.au/books/v3/bills/" + bill_id + "/approve?organization_id=7005347798"
+				type :POST
+				connection:"books"
+			];
+			info approve_bill;
+			upd_sync = Map();
+			upd_sync.put("Sync_to_books","Yes");
+			upd_sync.put("Zoho_Books_Bill_Id",create_bill.get("bill").get("bill_id"));
+			//upd_sync.put("SYNC_ON", zoho.currentdate());
+			update_VB = zoho.crm.updateRecord("Vendor_Bills",recid,upd_sync);
+			info update_VB;
+		}
+	}
+}
+}

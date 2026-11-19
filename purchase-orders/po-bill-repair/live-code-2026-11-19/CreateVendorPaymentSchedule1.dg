@@ -1,0 +1,70 @@
+void automation.CreateVendorPaymentSchedule1(Int poId)
+{
+/* ---------------- FETCH PO ---------------- */
+poRec = zoho.crm.getRecordById("Purchase_Orders",poId);
+poGrandTotal = ifnull(poRec.get("Grand_Total"),0);
+info poGrandTotal;
+/* ---------------- FETCH EXISTING VPS ---------------- */
+existingVps = zoho.crm.searchRecords("Vendor_Payment_Schedules","(Purchase_Order:equals:" + poId + ")");
+info existingVps;
+if(existingVps.size() == 0)
+{
+	automation.CreateVendorPay(poId);
+	return;
+}
+/* ---------------- FETCH VENDOR BILLS ---------------- */
+paidAmount = 0;
+paidBills = List();
+vendorBills = zoho.crm.searchRecords("Vendor_Bills","(Purchased_Order:equals:" + poId + ")");
+info vendorBills;
+billscreated_Count = 0;
+if(vendorBills.size() > 0)
+{
+	for each  bill in vendorBills
+	{
+		if(bill.get("Payment_Status") == "Paid")
+		{
+			billscreated_Count = billscreated_Count + 1;
+			paidAmount = paidAmount + ifnull(bill.get("Grand_Total"),0);
+			info paidAmount;
+			info "-------";
+			paidBills.add(bill);
+		}
+		else
+		{
+			// Void unpaid bills
+			info zoho.crm.updateRecord("Vendor_Bills",bill.get("id"),{"Payment_Status":"Voided"});
+		}
+	}
+}
+/* ---------------- VOID OLD VPS ---------------- */
+for each  vps in existingVps
+{
+	info zoho.crm.updateRecord("Vendor_Payment_Schedules",vps.get("id"),{"Status":"Voided"});
+	nextVersion = 1;
+	vpsversion = ifnull(vps.get("VPS_Version"),0);
+	if(vpsversion > nextVersion)
+	{
+		nextVersion = vpsversion;
+	}
+}
+nextVersion = nextVersion + 1;
+info "next vesion :" + nextVersion;
+remainingAmount = poGrandTotal - paidAmount;
+if(remainingAmount < 0)
+{
+	remainingAmount = 0;
+}
+/* ---------------- CREATE NEW VPS (SAME STRUCTURE) ---------------- */
+info "remainingAmount";
+info remainingAmount;
+automation.Recreate_VPS(poId,remainingAmount,nextVersion,billscreated_Count);
+/* ---------------- REASSOCIATE PAID BILLS ---------------- */
+newVps = zoho.crm.searchRecords("Vendor_Payment_Schedules","(Purchase_Order:equals:" + poId + ")");
+// pick latest created VPS
+newVpsId = newVps.get(0).get("id");
+for each  pBill in paidBills
+{
+	zoho.crm.updateRecord("Vendor_Bills",pBill.get("id"),{"Vendor_Payment_Schedule":newVpsId});
+}
+}
